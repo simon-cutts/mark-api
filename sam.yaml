@@ -1,0 +1,78 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: AWS SomApiApp API - my.api.app::my-api-app
+Globals:
+  Api:
+    EndpointConfiguration: REGIONAL
+Resources:
+  SomApiAppFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: com.sighware.mark.handler.Router::handleRequest
+      Runtime: java8
+      CodeUri: target/som-api.jar
+      MemorySize: 1024
+      Policies:
+          - AWSLambdaBasicExecutionRole
+          - DynamoDBCrudPolicy:
+              TableName: !Ref RegistrationNumberDynamoDBTable
+          - DynamoDBCrudPolicy:
+              TableName: !Ref RegistrationNumberEventDynamoDBTable
+      Timeout: 15
+      Events:
+        GetResource:
+          Type: Api
+          Properties:
+            Path: /{proxy+}
+            Method: any
+
+  RegistrationNumberDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: mark
+          AttributeType: S
+      KeySchema:
+        - AttributeName: mark
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      TableName: RegistrationNumber
+
+  RegistrationNumberEventDynamoDBTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      AttributeDefinitions:
+        - AttributeName: mark
+          AttributeType: S
+        - AttributeName: createTime
+          AttributeType: S
+      GlobalSecondaryIndexes:
+        - IndexName: CreateTimeIdx
+          KeySchema:
+            - AttributeName: createTime
+              KeyType: HASH
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+      KeySchema:
+        - AttributeName: mark
+          KeyType: HASH
+        - AttributeName: createTime
+          KeyType: RANGE
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+      StreamSpecification:
+        StreamViewType: NEW_IMAGE
+      TableName: RegistrationNumberEvent
+
+Outputs:
+  SomApiAppApi:
+    Description: URL for application
+    Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod'
+    Export:
+      Name: SomApiAppApi
