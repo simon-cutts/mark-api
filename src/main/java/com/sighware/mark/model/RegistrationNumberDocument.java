@@ -3,9 +3,13 @@ package com.sighware.mark.model;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+/**
+ * Allows a RegistrationNumber to be persisted as a json document in the RegistrationNumberEvent table, wrapped
+ * within an event
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @DynamoDBDocument
-public class RegistrationNumberDocument implements RegistrationNumberInterface {
+public class RegistrationNumberDocument implements RegistrationNumber {
     private String mark;
     private String status;
     private String eventTime;
@@ -60,16 +64,4 @@ public class RegistrationNumberDocument implements RegistrationNumberInterface {
     public void setEntitlement(Entitlement entitlement) {
         this.entitlement = entitlement;
     }
-
-//    public static com.sighware.som.event.RegistrationNumber toTable(RegistrationNumber registrationNumber) {
-//        com.sighware.som.event.RegistrationNumber rne = new com.sighware.som.event.RegistrationNumber();
-//        rne.setMark(registrationNumber.getMark());
-//        rne.setEntitlement(registrationNumber.getEntitlement());
-//        rne.setPrice(registrationNumber.getPrice());
-//        rne.setStatus(registrationNumber.getStatus());
-//        rne.setVersion(registrationNumber.getVersion());
-//        rne.setEventTime(registrationNumber.getEventTime());
-//
-//        return rne;
-//    }
 }

@@ -10,7 +10,7 @@ Resources:
     Properties:
       Handler: com.sighware.mark.handler.Router::handleRequest
       Runtime: java8
-      CodeUri: target/som-api.jar
+      CodeUri: target/mark-api.jar
       MemorySize: 1024
       Policies:
           - AWSLambdaBasicExecutionRole

@@ -10,7 +10,7 @@ Resources:
     Properties:
       Handler: com.sighware.mark.handler.Router::handleRequest
       Runtime: java8
-      CodeUri: s3://customer-record/870a91c8e46961239e69d36dbe780dcb
+      CodeUri: s3://customer-record/5c42fea7f3c350b3cdc68987e96f8310
       MemorySize: 1024
       Policies:
       - AWSLambdaBasicExecutionRole

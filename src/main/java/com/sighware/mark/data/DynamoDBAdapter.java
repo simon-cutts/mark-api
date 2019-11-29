@@ -8,28 +8,15 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.document.DynamoDB;
 
 public class DynamoDBAdapter {
-
-    public static final String REGISTRATION_NUMBER_TABLE = "RegistrationNumber";
-    public static final String REGISTRATION_NUMBER_EVENT_TABLE = "RegistrationNumberEvent";
-
     private static DynamoDBAdapter self = null;
+
     private final AmazonDynamoDB client;
     private final DynamoDBMapper mapper;
     private final DynamoDB dynamoDB;
 
-
     private DynamoDBAdapter() {
-        // create the client
         client = AmazonDynamoDBClientBuilder.standard()
-                .withRegion(Regions.EU_WEST_2)
-                .build();
-        dynamoDB = new DynamoDB(client);
-        mapper = new DynamoDBMapper(client);
-    }
-
-    private DynamoDBAdapter(AwsClientBuilder.EndpointConfiguration config) {
-        // create the client
-        client = AmazonDynamoDBClientBuilder.standard().withEndpointConfiguration(config)
+                .withRegion(Regions.EU_WEST_2) // TODO: FIXME
                 .build();
         dynamoDB = new DynamoDB(client);
         mapper = new DynamoDBMapper(client);

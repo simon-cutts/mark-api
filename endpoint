@@ -1,28 +1,30 @@
 
 mvn clean package ; sam package --template-file sam.yaml --output-template-file packaged-sam.yaml --s3-bucket customer-record \
-    ; sam deploy --template-file ./packaged-sam.yaml --stack-name som-app --capabilities CAPABILITY_IAM \
-    ; aws cloudformation describe-stacks --stack-name som-app
+    ; sam deploy --template-file ./packaged-sam.yaml --stack-name mark-api --capabilities CAPABILITY_IAM \
+    ; aws cloudformation describe-stacks --stack-name mark-api
 
-time  curl https://mxexlrynsj.execute-api.eu-west-2.amazonaws.com/Prod
+time  curl https://ou86lwfrp6.execute-api.eu-west-2.amazonaws.com/Prod
 
-aws cloudformation delete-stack --stack-name som-app
+aws cloudformation delete-stack --stack-name mark-api
 
-sam logs -n SomApiAppFunction --stack-name som-app
+sam logs -n SomApiAppFunction --stack-name mark-api
 
 
-curl -H "Content-Type: application/json" -X POST https://mxexlrynsj.execute-api.eu-west-2.amazonaws.com/Prod/som/v1/entitlement -d '
+time curl -H "Content-Type: application/json" -X POST https://ou86lwfrp6.execute-api.eu-west-2.amazonaws.com/Prod/som/v1/entitlement -d '
 {
-  "mark": "AFC 6",
-  "eventTime": "2019-11-27T13:04:32.025Z",
+  "mark": "AFC F52",
+  "eventTime": "2019-11-29T09:26:43.837Z",
   "price": 299,
   "entitlement": {
-    "certificateNo": "CERT2345",
-    "certificateTime": "2019-11-27T13:04:32.005Z",
+    "certificateNo": "EV56RP259VQP8G423H65",
+    "nomineeName": "Mr John Jones",
+    "certificateTime": "2019-11-29T09:26:43.786Z",
     "purchaserName": "Felicity Jones",
-    "addLine1": "2 My Street",
-    "addLine2": "Redwood",
-    "postTown": "Swansea",
-    "postcode": "SW1 4RT",
-    "nomineeName": "Mr John Jones"
+    "address": {
+      "addLine1": "2 My Street",
+      "addLine2": "Redwood",
+      "postTown": "Swansea",
+      "postcode": "SW1 4RT"
+    }
   }
 }'

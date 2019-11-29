@@ -1,63 +1,29 @@
 package com.sighware.mark.model;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
+public interface RegistrationNumber {
 
-@JsonInclude(JsonInclude.Include.NON_NULL)
-public class RegistrationNumber implements RegistrationNumberInterface {
+    String getMark();
 
-    private String mark;
-    private String status;
-    private String eventTime;
-    private Double price;
-    private Long version;
-    private Entitlement entitlement;
+    void setMark(String mark);
 
-    public String getMark() {
-        return mark;
-    }
+    String getStatus();
 
-    public void setMark(String mark) {
-        this.mark = mark;
-    }
+    void setStatus(String status);
 
-    public String getStatus() {
-        return status;
-    }
+    String getEventTime();
 
-    public void setStatus(String status) {
-        this.status = status;
-    }
+    void setEventTime(String eventTime);
 
-    public String getEventTime() {
-        return eventTime;
-    }
+    Double getPrice();
 
-    public void setEventTime(String eventTime) {
-        this.eventTime = eventTime;
-    }
+    void setPrice(Double price);
 
-    public Double getPrice() {
-        return price;
-    }
+    Long getVersion();
 
-    public void setPrice(Double price) {
-        this.price = price;
-    }
+    void setVersion(Long version);
 
-    public Long getVersion() {
-        return version;
-    }
+    Entitlement getEntitlement();
 
-    public void setVersion(Long version) {
-        this.version = version;
-    }
-
-    public Entitlement getEntitlement() {
-        return entitlement;
-    }
-
-    public void setEntitlement(Entitlement entitlement) {
-        this.entitlement = entitlement;
-    }
+    void setEntitlement(Entitlement entitlement);
 
 }

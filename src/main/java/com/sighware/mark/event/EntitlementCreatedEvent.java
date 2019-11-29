@@ -1,10 +1,10 @@
 package com.sighware.mark.event;
 
-import com.sighware.mark.model.RegistrationNumberInterface;
+import com.sighware.mark.model.RegistrationNumber;
 
 public class EntitlementCreatedEvent extends RegistrationNumberEvent {
 
-    public EntitlementCreatedEvent(RegistrationNumberInterface registrationNumber) {
+    public EntitlementCreatedEvent(RegistrationNumber registrationNumber) {
         super(registrationNumber);
     }
 }
