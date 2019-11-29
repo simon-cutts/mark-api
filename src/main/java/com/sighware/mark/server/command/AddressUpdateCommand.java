@@ -8,8 +8,8 @@ import com.sighware.mark.server.event.RegistrationNumberEvent;
  *
  * @author Simon Cutts
  */
-public class AddressUpdatedCommand extends Command {
-    public AddressUpdatedCommand(RegistrationNumberEvent event, DynamoDBMapper mapper) {
+public class AddressUpdateCommand extends Command {
+    public AddressUpdateCommand(RegistrationNumberEvent event, DynamoDBMapper mapper) {
         super(event, mapper);
     }
 }

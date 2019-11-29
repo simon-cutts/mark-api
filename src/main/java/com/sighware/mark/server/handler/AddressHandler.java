@@ -4,7 +4,7 @@ import com.amazonaws.HttpMethod;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sighware.mark.server.command.AddressUpdatedCommand;
+import com.sighware.mark.server.command.AddressUpdateCommand;
 import com.sighware.mark.server.data.DynamoDBAdapter;
 import com.sighware.mark.server.event.AddressUpdatedEvent;
 import com.sighware.mark.server.model.Error;
@@ -32,7 +32,7 @@ public class AddressHandler {
             RegistrationNumber registrationNumber = objectMapper.readValue(request.getBody(), RegistrationNumberDocument.class);
 
             // Create the command with the event
-            AddressUpdatedCommand command = new AddressUpdatedCommand(
+            AddressUpdateCommand command = new AddressUpdateCommand(
                     new AddressUpdatedEvent(registrationNumber), adapter.getDynamoDBMapper());
 
             String json = null;
