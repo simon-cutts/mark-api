@@ -16,10 +16,10 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
         try {
             log.info(request.getPath());
             switch (request.getPath()) {
-                case "/som/v1/entitlement":
+                case "/mark/v1/entitlement":
                     return new EntitlementHandler(DynamoDBAdapter.getInstance()).handle(request);
 
-                case "/som/v1/entitlement/address":
+                case "/mark/v1/entitlement/address":
                     return new AddressHandler(DynamoDBAdapter.getInstance()).handle(request);
 
                 default:

@@ -11,7 +11,7 @@ aws cloudformation delete-stack --stack-name mark-api
 sam logs -n SomApiAppFunction --stack-name mark-api
 
 
-time curl -H "Content-Type: application/json" -X POST https://koxwmaauoh.execute-api.eu-west-2.amazonaws.com/Prod/som/v1/entitlement -d '
+time curl -H "Content-Type: application/json" -X POST https://koxwmaauoh.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement -d '
 {
   "mark": "AFC F5",
   "eventTime": "2019-11-29T09:26:43.837Z",
