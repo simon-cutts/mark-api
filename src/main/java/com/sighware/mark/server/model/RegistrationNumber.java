@@ -1,4 +1,4 @@
-package com.sighware.mark.model;
+package com.sighware.mark.server.model;
 
 public interface RegistrationNumber {
 

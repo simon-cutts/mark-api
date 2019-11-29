@@ -1,6 +1,6 @@
-package com.sighware.mark.event;
+package com.sighware.mark.server.event;
 
-import com.sighware.mark.model.RegistrationNumber;
+import com.sighware.mark.server.model.RegistrationNumber;
 
 public class AddressUpdatedEvent extends RegistrationNumberEvent {
 

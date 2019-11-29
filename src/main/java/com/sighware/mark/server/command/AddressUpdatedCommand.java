@@ -1,7 +1,7 @@
-package com.sighware.mark.command;
+package com.sighware.mark.server.command;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
-import com.sighware.mark.event.RegistrationNumberEvent;
+import com.sighware.mark.server.event.RegistrationNumberEvent;
 
 /**
  * Entitlement create command to handle the persistence of both the Event and its payload.

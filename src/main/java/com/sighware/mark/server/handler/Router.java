@@ -1,10 +1,10 @@
-package com.sighware.mark.handler;
+package com.sighware.mark.server.handler;
 
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.sighware.mark.data.DynamoDBAdapter;
+import com.sighware.mark.server.data.DynamoDBAdapter;
 import org.apache.log4j.Logger;
 
 public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse> {

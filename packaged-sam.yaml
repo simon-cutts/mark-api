@@ -8,9 +8,9 @@ Resources:
   SomApiAppFunction:
     Type: AWS::Serverless::Function
     Properties:
-      Handler: com.sighware.mark.handler.Router::handleRequest
+      Handler: com.sighware.mark.server.handler.Router::handleRequest
       Runtime: java8
-      CodeUri: s3://customer-record/5c42fea7f3c350b3cdc68987e96f8310
+      CodeUri: s3://customer-record/1b471c5118a6242dcc5eee67c8f36734
       MemorySize: 1024
       Policies:
       - AWSLambdaBasicExecutionRole
@@ -27,6 +27,60 @@ Resources:
           Properties:
             Path: /{proxy+}
             Method: any
+  ProcessDynamoDBStream:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: com.sighware.mark.stream.DynamoDbStreamProcessor::handleRequest
+      Runtime: java8
+      CodeUri: s3://customer-record/1b471c5118a6242dcc5eee67c8f36734
+      MemorySize: 1024
+      Environment:
+        Variables:
+          KINESIS_STREAM_NAME:
+            Ref: KinesisStream
+      Policies:
+      - AWSLambdaDynamoDBExecutionRole
+      - KinesisCrudPolicy:
+          StreamName:
+            Ref: KinesisStream
+      Events:
+        Stream:
+          Type: DynamoDB
+          Properties:
+            Stream:
+              Fn::GetAtt:
+              - RegistrationNumberEventDynamoDBTable
+              - StreamArn
+            BatchSize: 1
+            StartingPosition: TRIM_HORIZON
+  ProcessKinesisStreamS3:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: com.sighware.mark.stream.KinesisStreamS3Processor::handleRequest
+      Runtime: java8
+      CodeUri: s3://customer-record/1b471c5118a6242dcc5eee67c8f36734
+      MemorySize: 1024
+      Environment:
+        Variables:
+          BUCKET_NAME:
+            Ref: EventBucket
+      Policies:
+      - KinesisStreamReadPolicy:
+          StreamName:
+            Ref: KinesisStream
+      - S3CrudPolicy:
+          BucketName:
+            Ref: EventBucket
+      Events:
+        Stream:
+          Type: Kinesis
+          Properties:
+            Stream:
+              Fn::GetAtt:
+              - StreamConsumer
+              - ConsumerARN
+            BatchSize: 1
+            StartingPosition: TRIM_HORIZON
   RegistrationNumberDynamoDBTable:
     Type: AWS::DynamoDB::Table
     Properties:
@@ -69,6 +123,23 @@ Resources:
       StreamSpecification:
         StreamViewType: NEW_IMAGE
       TableName: RegistrationNumberEvent
+  KinesisStream:
+    Type: AWS::Kinesis::Stream
+    Properties:
+      Name: RegistrationNumberEventKinesisStream
+      ShardCount: 1
+  StreamConsumer:
+    Type: AWS::Kinesis::StreamConsumer
+    Properties:
+      StreamARN:
+        Fn::GetAtt:
+        - KinesisStream
+        - Arn
+      ConsumerName: RegistrationNumberEventStreamConsumer
+  EventBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: mark-api-event
 Outputs:
   SomApiAppApi:
     Description: URL for application
@@ -76,3 +147,21 @@ Outputs:
       Fn::Sub: https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod
     Export:
       Name: SomApiAppApi
+  RegistrationNumberEventDynamoDBTable:
+    Description: DynamoDB Events table
+    Value:
+      Fn::GetAtt:
+      - RegistrationNumberEventDynamoDBTable
+      - StreamArn
+  StreamARN:
+    Description: Kinesis Stream ARN
+    Value:
+      Fn::GetAtt:
+      - KinesisStream
+      - Arn
+  ConsumerARN:
+    Description: Stream consumer ARN
+    Value:
+      Fn::GetAtt:
+      - StreamConsumer
+      - ConsumerARN

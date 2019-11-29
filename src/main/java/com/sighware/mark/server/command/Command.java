@@ -1,9 +1,9 @@
-package com.sighware.mark.command;
+package com.sighware.mark.server.command;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.amazonaws.services.dynamodbv2.datamodeling.TransactionWriteRequest;
-import com.sighware.mark.event.RegistrationNumberEvent;
-import com.sighware.mark.model.RegistrationNumber;
+import com.sighware.mark.server.event.RegistrationNumberEvent;
+import com.sighware.mark.server.model.RegistrationNumber;
 import org.apache.log4j.Logger;
 
 /**

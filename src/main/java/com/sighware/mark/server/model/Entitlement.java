@@ -1,4 +1,4 @@
-package com.sighware.mark.model;
+package com.sighware.mark.server.model;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 import com.fasterxml.jackson.annotation.JsonInclude;

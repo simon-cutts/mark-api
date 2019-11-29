@@ -1,16 +1,15 @@
-package com.sighware.mark.model;
+package com.sighware.mark.server.model;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
- * Allows a RegistrationNumber to be persisted directly in the RegistrationNumber table
+ * Allows a RegistrationNumber to be persisted as a json document in the RegistrationNumberEvent table, wrapped
+ * within an event
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
-@DynamoDBTable(tableName = "RegistrationNumber")
-public class RegistrationNumberTable implements RegistrationNumber {
+@DynamoDBDocument
+public class RegistrationNumberDocument implements RegistrationNumber {
     private String mark;
     private String status;
     private String eventTime;
@@ -18,7 +17,6 @@ public class RegistrationNumberTable implements RegistrationNumber {
     private Long version;
     private Entitlement entitlement;
 
-    @DynamoDBHashKey(attributeName = "mark")
     public String getMark() {
         return mark;
     }
@@ -51,7 +49,6 @@ public class RegistrationNumberTable implements RegistrationNumber {
         this.price = price;
     }
 
-    @DynamoDBVersionAttribute
     public Long getVersion() {
         return version;
     }

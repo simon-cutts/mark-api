@@ -1,10 +1,13 @@
-package com.sighware.mark.event;
+package com.sighware.mark.server.event;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import com.sighware.mark.model.RegistrationNumber;
-import com.sighware.mark.model.RegistrationNumberConverter;
-import com.sighware.mark.model.RegistrationNumberDocument;
-import com.sighware.mark.model.RegistrationNumberTable;
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.sighware.mark.server.model.RegistrationNumber;
+import com.sighware.mark.server.model.RegistrationNumberConverter;
+import com.sighware.mark.server.model.RegistrationNumberDocument;
+import com.sighware.mark.server.model.RegistrationNumberTable;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
@@ -18,6 +21,8 @@ public class RegistrationNumberEvent {
     private String eventId;
     private String eventName;
     private String mark;
+
+    public RegistrationNumberEvent() {}
 
     public RegistrationNumberEvent(RegistrationNumber registrationNumber) {
         eventId = UUID.randomUUID().toString();
@@ -33,25 +38,47 @@ public class RegistrationNumberEvent {
         return mark;
     }
 
-    @DynamoDBRangeKey(attributeName = "createTime")
+    public void setMark(String mark) {
+        this.mark = mark;
+    }
+
     public String getCreateTime() {
         return createTime;
+    }
+
+    @DynamoDBRangeKey(attributeName = "createTime")
+    public void setCreateTime(String createTime) {
+        this.createTime = createTime;
     }
 
     public String getEventId() {
         return eventId;
     }
 
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
     public String getEventName() {
         return eventName;
     }
 
+    public void setEventName(String eventName) {
+        this.eventName = eventName;
+    }
+
     @DynamoDBNamed("RegistrationNumber")
+    @JsonProperty("RegistrationNumber")
     public RegistrationNumberDocument getRegistrationNumber() {
         return registrationNumber;
     }
 
+    public void setRegistrationNumber(RegistrationNumberDocument registrationNumber) {
+        this.registrationNumber = registrationNumber;
+    }
+
     @DynamoDBIgnore
+    @JsonIgnore
     public RegistrationNumberTable getRegistrationNumberTable() {
         return RegistrationNumberConverter.toTable(registrationNumber);
     }

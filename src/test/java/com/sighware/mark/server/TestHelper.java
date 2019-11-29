@@ -1,11 +1,11 @@
-package com.sighware.mark;
+package com.sighware.mark.server;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sighware.mark.model.Address;
-import com.sighware.mark.model.Entitlement;
-import com.sighware.mark.model.RegistrationNumber;
-import com.sighware.mark.model.RegistrationNumberDocument;
+import com.sighware.mark.server.model.Address;
+import com.sighware.mark.server.model.Entitlement;
+import com.sighware.mark.server.model.RegistrationNumber;
+import com.sighware.mark.server.model.RegistrationNumberDocument;
 
 import java.time.ZoneOffset;
 import java.time.ZonedDateTime;

@@ -1,4 +1,4 @@
-package com.sighware.mark.model;
+package com.sighware.mark.server.model;
 
 /**
  * Converts between RegistrationNumberTable and RegistrationNumberDocument
@@ -8,14 +8,14 @@ public class RegistrationNumberConverter {
     private RegistrationNumberConverter() {
     }
 
-    public static com.sighware.mark.model.RegistrationNumberTable toTable(RegistrationNumber source) {
-        com.sighware.mark.model.RegistrationNumberTable target = new com.sighware.mark.model.RegistrationNumberTable();
+    public static RegistrationNumberTable toTable(RegistrationNumber source) {
+        RegistrationNumberTable target = new RegistrationNumberTable();
         convert(source, target);
         return target;
     }
 
-    public static com.sighware.mark.model.RegistrationNumberDocument toDocument(RegistrationNumber source) {
-        com.sighware.mark.model.RegistrationNumberDocument target = new com.sighware.mark.model.RegistrationNumberDocument();
+    public static RegistrationNumberDocument toDocument(RegistrationNumber source) {
+        RegistrationNumberDocument target = new RegistrationNumberDocument();
         convert(source, target);
         return target;
     }

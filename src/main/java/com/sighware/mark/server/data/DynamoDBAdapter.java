@@ -1,4 +1,4 @@
-package com.sighware.mark.data;
+package com.sighware.mark.server.data;
 
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.regions.Regions;
