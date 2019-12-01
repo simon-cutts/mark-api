@@ -13,7 +13,7 @@ sam logs -n SomApiAppFunction --stack-name mark-api
 
 time curl -H "Content-Type: application/json" -X POST https://koxwmaauoh.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement -d '
 {
-  "mark": "AFC F5",
+  "mark": "AFC F7",
   "eventTime": "2019-11-29T09:26:43.837Z",
   "price": 299,
   "entitlement": {

@@ -1,7 +1,6 @@
 package com.sighware.mark.server.event;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.*;
-import com.fasterxml.jackson.annotation.JsonAlias;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.sighware.mark.server.model.RegistrationNumber;
@@ -22,7 +21,8 @@ public class RegistrationNumberEvent {
     private String eventName;
     private String mark;
 
-    public RegistrationNumberEvent() {}
+    public RegistrationNumberEvent() {
+    }
 
     public RegistrationNumberEvent(RegistrationNumber registrationNumber) {
         eventId = UUID.randomUUID().toString();

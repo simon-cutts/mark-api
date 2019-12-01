@@ -13,7 +13,6 @@ import com.amazonaws.services.lambda.runtime.events.DynamodbEvent.DynamodbStream
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sighware.mark.server.event.RegistrationNumberEvent;
 
-
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;

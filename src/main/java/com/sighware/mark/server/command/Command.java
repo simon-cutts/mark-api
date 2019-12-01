@@ -7,11 +7,11 @@ import com.sighware.mark.server.model.RegistrationNumber;
 import org.apache.log4j.Logger;
 
 /**
- * Entitlement create command to handle the persistence of both the Event and its payload.
+ * Parent command to handle the persistence of both the Event and its payload.
  *
  * @author Simon Cutts
  */
-public class Command {
+public abstract class Command {
     static final Logger log = Logger.getLogger(Command.class);
 
     private final DynamoDBMapper mapper;

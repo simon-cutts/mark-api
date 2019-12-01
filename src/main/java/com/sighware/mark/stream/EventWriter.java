@@ -25,7 +25,7 @@ public class EventWriter {
      * @return
      */
     public String write(String bucket, RegistrationNumberEvent event) {
-        String key = event.getEventName() + "-" + event.getCreateTime() + "-" + event.getMark();
+        String key = event.getMark() + "-" + event.getCreateTime() + "-" + event.getEventName();
         try {
             s3.putObject(bucket, key, objectMapper.writeValueAsString(event));
         } catch (JsonProcessingException e) {

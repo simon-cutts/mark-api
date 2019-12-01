@@ -10,7 +10,7 @@ Resources:
     Properties:
       Handler: com.sighware.mark.server.handler.Router::handleRequest
       Runtime: java8
-      CodeUri: s3://customer-record/1b471c5118a6242dcc5eee67c8f36734
+      CodeUri: s3://customer-record/078ad2537e95d156b8d1b9fad1b954e8
       MemorySize: 1024
       Policies:
       - AWSLambdaBasicExecutionRole
@@ -32,7 +32,7 @@ Resources:
     Properties:
       Handler: com.sighware.mark.stream.DynamoDbStreamProcessor::handleRequest
       Runtime: java8
-      CodeUri: s3://customer-record/1b471c5118a6242dcc5eee67c8f36734
+      CodeUri: s3://customer-record/078ad2537e95d156b8d1b9fad1b954e8
       MemorySize: 1024
       Environment:
         Variables:
@@ -58,7 +58,7 @@ Resources:
     Properties:
       Handler: com.sighware.mark.stream.KinesisStreamS3Processor::handleRequest
       Runtime: java8
-      CodeUri: s3://customer-record/1b471c5118a6242dcc5eee67c8f36734
+      CodeUri: s3://customer-record/078ad2537e95d156b8d1b9fad1b954e8
       MemorySize: 1024
       Environment:
         Variables:
