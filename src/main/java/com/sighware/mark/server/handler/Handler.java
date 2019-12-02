@@ -32,7 +32,7 @@ public abstract class Handler {
             json = objectMapper.writeValueAsString(command.persist());
             response.setStatusCode(statusCode);
         } catch (Exception e) {
-            log.error(e);
+            log.error(e.getMessage(), e);
             response.setStatusCode(500);
             Error err = new Error("500", "Internal Server Error", "Internal Server Error");
             json = err.toJson();

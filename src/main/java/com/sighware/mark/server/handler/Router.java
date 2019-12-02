@@ -26,7 +26,7 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
                     return new AwsProxyResponse(404);
             }
         } catch (Exception ex) {
-            log.error(ex);
+            log.error(ex.getMessage(), ex);
             return new AwsProxyResponse(500);
         }
     }
