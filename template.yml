@@ -1,11 +1,11 @@
 AWSTemplateFormatVersion: '2010-09-09'
 Transform: AWS::Serverless-2016-10-31
-Description: AWS SomApiApp API - mark-api::mark-api
+Description: AWS MarkApiApp API - mark-api::mark-api
 Globals:
   Api:
     EndpointConfiguration: REGIONAL
 Resources:
-  SomApiAppFunction:
+  MarkApiAppFunction:
     Type: AWS::Serverless::Function
     Properties:
       Handler: com.sighware.mark.server.handler.Router::handleRequest
@@ -71,11 +71,13 @@ Resources:
       TableName: RegistrationNumberEvent
 
 Outputs:
-  SomApiAppApi:
+  MarkApiApp:
     Description: URL for application
     Value: !Sub 'https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod'
     Export:
-      Name: SomApiAppApi
+      Name: MarkApiApp
   RegistrationNumberEventDynamoDBTable:
-    Description: "DynamoDB Events table"
+    Description: "DynamoDB Events table ARN"
     Value: !GetAtt RegistrationNumberEventDynamoDBTable.StreamArn
+    Export:
+      Name: DynamoDBStreamArn

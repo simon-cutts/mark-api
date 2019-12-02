@@ -4,7 +4,7 @@ mvn clean package ; sam package --output-template-file packaged.yml --s3-bucket 
     ; sam deploy --template-file ./packaged.yml --stack-name mark-api --capabilities CAPABILITY_IAM \
     ; aws cloudformation describe-stacks --stack-name mark-api
 
-time  curl https://7v4hodok2k.execute-api.eu-west-2.amazonaws.com/Prod
+time  curl https://60b8n5re2e.execute-api.eu-west-2.amazonaws.com/Prod
 
 aws cloudformation describe-stack-events --stack-name mark-api
 
@@ -13,7 +13,7 @@ aws cloudformation delete-stack --stack-name mark-api
 sam logs -n SomApiAppFunction --stack-name mark-api
 
 
-time curl -H "Content-Type: application/json" -X POST https://7v4hodok2k.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement -d '
+time curl -H "Content-Type: application/json" -X POST https://60b8n5re2e.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement -d '
 {
   "mark": "AFC F7",
   "eventTime": "2019-11-29T09:26:43.837Z",

@@ -2,7 +2,9 @@
 
 ![mark](mark-api.png)
 
-This application depicted above is intended as a strawman to demonstrate the benefits of a light-weight, purely serverless event sourcing system. Event sourcing stores every state change to the application as an event object. These event objects are stored in the sequence they were applied for the lifetime of the application.
+This applications depicted above, mark-api and mark-event, are intended as a strawman to demonstrate the benefits of a light-weight, purely serverless event sourcing system. Event sourcing stores every state change to the application as an event object. These event objects are stored in the sequence they were applied for the lifetime of the application.
+
+This mark-api application has a companion application, [mark-event](https://github.com/simon-cutts/mark-event)). The mark-api app is a microservice managing marks; mark-event is an application consuming the events produced from mark-api.
 
 Serverless was chosen to simplify the infrastructure with minimal dev ops; but, just as importantly, to use native cloud services rather than rely non-trivial specialist event sourced application frameworks. 
 
@@ -26,37 +28,22 @@ Both the `RegistrationNumberEvent` and `RegistrationNumber` table are persisted 
 
 ### Event Stream
 
-Events traverse the event stream to notify downstream clients. The event stream is transactional and comprises:
+Events traverse the event stream to notify downstream clients. The event stream is a combination of mark-api and mark-event; its transactional and comprises:
 
-1. A DynamoDB stream from the `RegistrationNumberEvent` table, emitting transactional, reliable, time ordered sequence of events. Events remain in `RegistrationNumberEvent` for the lifetime of the application 
-2. The `DynamoDbStreamProcessor` lambda picks data off the DynamoDB stream and reassembles it into a JSON representation of the event. This event is then written to the kinesis stream`RegistrationNumberEventKinesisStream`.
-3. The Kinesis `CustomerEventKinesisStream` stream maintains the same time ordered sequence of events that can be fanned out to multiple interested clients
-4. The `KinesisStreamS3Processor` lambda is an example of a HTTP/2 Kinesis client using [enhanced fan-out](https://docs.aws.amazon.com/streams/latest/dev/introduction-to-enhanced-consumers.html) to read from the stream. It writes the events to S3. Multiple other enhanced fan-out Lambdas could also access the same stream, acting independently of each other, maintaining their own transactional view of the stream 
+1. From mark-api, a DynamoDB stream from the `RegistrationNumberEvent` table, emits transactional, reliable, time ordered sequence of events. Events remain in `RegistrationNumberEvent` for the lifetime of the mark-api application 
+2. The `DynamoDbStreamProcessor` lambda in the mark-event app picks data off the DynamoDB stream and reassembles it into a JSON representation of the event. This event is then written to the kinesis stream`RegistrationNumberEventKinesisStream` within mark-event.
+3. The Kinesis `CustomerEventKinesisStream` stream from mark-event maintains the same time ordered sequence of events that can be fanned out to multiple interested clients
+4. The `KinesisStreamS3Processor` lambda within mark-event is an example of a HTTP/2 Kinesis client using [enhanced fan-out](https://docs.aws.amazon.com/streams/latest/dev/introduction-to-enhanced-consumers.html) to read from the stream. It writes the events to S3. Multiple other enhanced fan-out Lambdas could also access the same stream, acting independently of each other, maintaining their own transactional view of the stream 
 
 ### Outstanding Tasks
 
 Stuff for the next iteration:
 
-1. Downstream client (KinesisStreamS3Processor) is not idempotent
-2. Consider rewriting with TypeScript - the cold start times are 6 seconds!
+1. Consider rewriting with TypeScript - the cold start times are 6 seconds!
 
 ## Installation
 The application can be deployed in an AWS account using the [Serverless Application Model (SAM)](https://github.com/awslabs/serverless-application-model). 
 
-The example `KinesisStreamS3Processor` lambda client needs an S3 bucket created to store a copy of all events sent to the application. The `sam.yaml` file in the root folder contains the application definition. Once you've created the bucket, update the bucket name in `sam.yaml` file, replacing
-```
-  EventBucket:
-    Type: 'AWS::S3::Bucket'
-    Properties:
-      BucketName: "mark-api-event"
-```
-with
-```
-  EventBucket:
-    Type: 'AWS::S3::Bucket'
-    Properties:
-      BucketName: "<YOUR EVENT BUCKET NAME>"
-```
 To build and install the mark-api application you will need [AWS CLI](https://aws.amazon.com/cli/), [SAM](https://github.com/awslabs/serverless-application-model) and [Maven](https://maven.apache.org/) installed on your computer.
 
 Once they have been installed, from the shell, navigate to the root folder of the app and use maven to build a deployable jar. 
@@ -69,33 +56,33 @@ This command should generate a `mark-api.jar` in the `target` folder. Now that w
 You will need a deployment S3 bucket to store the artifacts for deployment. Once you have created the deployment S3 bucket, run the following command from the app root folder:
 
 ```
-$ sam package --template-file sam.yaml --output-template-file packaged-sam.yaml --s3-bucket <YOUR DEPLOYMENT S3 BUCKET NAME>
+$ sam package --output-template-file packaged.yml --s3-bucket <YOUR DEPLOYMENT S3 BUCKET NAME>
 
 Uploading to xxxxxxxxxxxxxxxxxxxxxxxxxx  6464692 / 6464692.0  (100.00%)
 Successfully packaged artifacts and wrote output template to file output-template.yaml.
 Execute the following command to deploy the packaged template
-aws cloudformation deploy --template-file /your/path/output-sam.yaml --stack-name <YOUR STACK NAME>
+aws cloudformation deploy --template-file /your/path/output-template.yml --stack-name <YOUR STACK NAME>
 ```
 
 You can now use the cli to deploy the application. Choose a stack name and run the `sam deploy` command.
  
 ```
-$ sam deploy --template-file ./packaged-sam.yaml --stack-name <YOUR STACK NAME> --capabilities CAPABILITY_IAM
+$ sam deploy --template-file ./packaged.yml --stack-name <YOUR STACK NAME> --capabilities CAPABILITY_IAM
 ```
 
-Once the application is deployed, you can describe the stack to show the API endpoint that was created. The endpoint should be the `CustomerRecordFuncApi` `OutputKey` of the `Outputs` property:
+Once the application is deployed, you can describe the stack to show the API endpoint and the DynamoDB stream the that was created
 
 ```
 $ aws cloudformation describe-stacks --stack-name <YOUR STACK NAME>
 {
     "Stacks": [
         {
-            "StackId": "arn:aws:cloudformation:eu-west-2:022099488461:stack/mark-api/ef9fe4d0-12b7-11ea-82ab-0622cd7b28da",
+            "StackId": "arn:aws:cloudformation:eu-west-2:022099488461:stack/mark-api/481ca360-151e-11ea-a1f3-0ab68d74e79c",
             "StackName": "mark-api",
-            "ChangeSetId": "arn:aws:cloudformation:eu-west-2:022099488461:changeSet/awscli-cloudformation-package-deploy-1575039178/1952ccc5-5890-4b16-b6bc-08e9aaa80de2",
-            "Description": "AWS SomApiApp API - my.api.app::my-api-app",
-            "CreationTime": "2019-11-29T14:52:59.699Z",
-            "LastUpdatedTime": "2019-11-29T14:53:05.087Z",
+            "ChangeSetId": "arn:aws:cloudformation:eu-west-2:022099488461:changeSet/awscli-cloudformation-package-deploy-1575303038/b86abb1b-0003-4ba7-aa7d-49b5c6543064",
+            "Description": "AWS MarkApiApp API - mark-api::mark-api",
+            "CreationTime": "2019-12-02T16:10:39.149Z",
+            "LastUpdatedTime": "2019-12-02T16:10:44.442Z",
             "RollbackConfiguration": {},
             "StackStatus": "CREATE_COMPLETE",
             "DisableRollback": false,
@@ -105,25 +92,16 @@ $ aws cloudformation describe-stacks --stack-name <YOUR STACK NAME>
             ],
             "Outputs": [
                 {
-                    "OutputKey": "SomApiAppApi",
-                    "OutputValue": "https://xxxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod",
-                    "Description": "URL for application",
-                    "ExportName": "SomApiAppApi"
-                },
-                {
-                    "OutputKey": "ConsumerARN",
-                    "OutputValue": "arn:aws:kinesis:eu-west-2:022099488461:stream/RegistrationNumberEventKinesisStream/consumer/RegistrationNumberEventStreamConsumer:1575039220",
-                    "Description": "Stream consumer ARN"
-                },
-                {
-                    "OutputKey": "StreamARN",
-                    "OutputValue": "arn:aws:kinesis:eu-west-2:022099488461:stream/RegistrationNumberEventKinesisStream",
-                    "Description": "Kinesis Stream ARN"
-                },
-                {
                     "OutputKey": "RegistrationNumberEventDynamoDBTable",
-                    "OutputValue": "arn:aws:dynamodb:eu-west-2:022099488461:table/RegistrationNumberEvent/stream/2019-11-29T14:53:09.055",
-                    "Description": "DynamoDB Events table"
+                    "OutputValue": "arn:aws:dynamodb:eu-west-2:xxxxxxxxx:table/RegistrationNumberEvent/stream/2019-12-02T16:10:47.159",
+                    "Description": "DynamoDB Events table ARN",
+                    "ExportName": "DynamoDBStreamArn"
+                },
+                {
+                    "OutputKey": "MarkApiApp",
+                    "OutputValue": "https://xxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod",
+                    "Description": "URL for application",
+                    "ExportName": "MarkApiApp"
                 }
             ],
             "Tags": [],
@@ -148,7 +126,7 @@ At any time, you may delete the stack
 $ aws cloudformation delete-stack --stack-name <YOUR STACK NAME>
 ```
 
-Create a mark type the following. This will only work once
+Create a mark type the following. This will only work once. To send another POST, change the value of "mark:"
 
 ```
 $ curl -H "Content-Type: application/json" -X POST https://koxwmaauoh.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement -d '
