@@ -1,16 +1,16 @@
 package com.sighware.mark.server.handler;
 
-import com.amazonaws.HttpMethod;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.command.AddressUpdateCommand;
 import com.sighware.mark.server.command.Command;
-import com.sighware.mark.server.data.DynamoDBAdapter;
+import com.sighware.mark.server.util.DynamoDBAdapter;
 import com.sighware.mark.server.event.AddressUpdatedEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.model.RegistrationNumberDocument;
+import com.sighware.mark.server.util.JsonUtil;
 
-import java.io.IOException;
+import javax.ws.rs.HttpMethod;
 
 public class AddressHandler extends Handler {
 
@@ -18,12 +18,12 @@ public class AddressHandler extends Handler {
         super(adapter);
     }
 
-    public AwsProxyResponse handle(AwsProxyRequest request) throws IOException {
+    public AwsProxyResponse handle(AwsProxyRequest request) {
         log.info("AddressHandler");
 
-        if (request.getHttpMethod().equals(HttpMethod.POST.name())) {
-            // Get the object from json
-            RegistrationNumber registrationNumber = objectMapper.readValue(request.getBody(), RegistrationNumberDocument.class);
+        if (request.getHttpMethod().equals(HttpMethod.POST)) {
+            // Get the object from toJson
+            RegistrationNumber registrationNumber = JsonUtil.toObject(request.getBody(), RegistrationNumberDocument.class);
 
             // Create the command with the event
             Command command = new AddressUpdateCommand(

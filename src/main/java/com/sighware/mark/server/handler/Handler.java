@@ -2,11 +2,10 @@ package com.sighware.mark.server.handler;
 
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sighware.mark.server.command.Command;
-import com.sighware.mark.server.data.DynamoDBAdapter;
+import com.sighware.mark.server.util.DynamoDBAdapter;
 import com.sighware.mark.server.model.Error;
+import com.sighware.mark.server.util.JsonUtil;
 import org.apache.log4j.Logger;
 
 import java.io.IOException;
@@ -17,19 +16,18 @@ import java.io.IOException;
 public abstract class Handler {
     protected static final Logger log = Logger.getLogger(Handler.class);
 
-    protected ObjectMapper objectMapper = new ObjectMapper();
     protected DynamoDBAdapter adapter;
 
     public Handler(DynamoDBAdapter adapter) {
         this.adapter = adapter;
     }
 
-    protected AwsProxyResponse getAwsProxyResponse(Command command, int statusCode) throws JsonProcessingException {
+    protected AwsProxyResponse getAwsProxyResponse(Command command, int statusCode) {
         String json;
         AwsProxyResponse response = new AwsProxyResponse();
-        response.addHeader("Content-Type", "application/json");
+        response.addHeader("Content-Type", "application/toJson");
         try {
-            json = objectMapper.writeValueAsString(command.persist());
+            json = JsonUtil.toJson(command.persist());
             response.setStatusCode(statusCode);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
