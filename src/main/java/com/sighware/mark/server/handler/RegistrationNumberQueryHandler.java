@@ -2,9 +2,9 @@ package com.sighware.mark.server.handler;
 
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
-import com.sighware.mark.server.util.DynamoDBAdapter;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
 import com.sighware.mark.server.query.RegistrationNumberQuery;
+import com.sighware.mark.server.util.DynamoDBAdapter;
 import com.sighware.mark.server.util.JsonUtil;
 import org.apache.log4j.Logger;
 
@@ -38,6 +38,7 @@ public class RegistrationNumberQueryHandler {
 
             } catch (RegistrationNumberNotFoundException ex) {
                 response.setStatusCode(204);
+                response.setBody("");
                 log.info("Unable to find mark " + mark);
             }
 

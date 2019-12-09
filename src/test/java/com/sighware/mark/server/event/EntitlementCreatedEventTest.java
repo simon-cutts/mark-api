@@ -1,21 +1,25 @@
 package com.sighware.mark.server.event;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sighware.mark.server.TestHelper;
 import com.sighware.mark.server.model.RegistrationNumber;
+import com.sighware.mark.server.model.RegistrationNumberDocument;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import java.io.IOException;
+import static com.sighware.mark.server.util.JsonUtil.toJson;
+import static com.sighware.mark.server.util.JsonUtil.toObject;
 
 class EntitlementCreatedEventTest {
 
     @Test
-    void testJson() throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
+    void testJson() {
         RegistrationNumber rn = TestHelper.buildRegistrationNumber();
-        AddressUpdatedEvent event = new AddressUpdatedEvent(rn);
-        String json = objectMapper.writeValueAsString(event);
-        System.out.println(json);
-        RegistrationNumberEvent rv = objectMapper.readValue(json, RegistrationNumberEvent.class);
+        String json = toJson(new AddressUpdatedEvent(rn));
+        toObject(json, RegistrationNumberEvent.class);
+        try {
+            toObject(json, RegistrationNumberDocument.class);
+            Assertions.fail("Should be RuntimeException");
+        } catch (RuntimeException e) {
+        }
     }
 }

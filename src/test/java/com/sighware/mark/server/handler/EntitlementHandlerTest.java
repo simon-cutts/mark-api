@@ -3,8 +3,8 @@ package com.sighware.mark.server.handler;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sighware.mark.server.TestHelper;
-import com.sighware.mark.server.data.DynamoDBAdapter;
 import com.sighware.mark.server.model.RegistrationNumber;
+import com.sighware.mark.server.util.DynamoDBAdapter;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import java.io.IOException;
 
 class EntitlementHandlerTest {
-    private ObjectMapper objectMapper = new ObjectMapper();
 
     @BeforeEach
     void setUp() {

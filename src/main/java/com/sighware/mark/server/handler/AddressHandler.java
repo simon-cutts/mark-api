@@ -4,10 +4,10 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.command.AddressUpdateCommand;
 import com.sighware.mark.server.command.Command;
-import com.sighware.mark.server.util.DynamoDBAdapter;
 import com.sighware.mark.server.event.AddressUpdatedEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.model.RegistrationNumberDocument;
+import com.sighware.mark.server.util.DynamoDBAdapter;
 import com.sighware.mark.server.util.JsonUtil;
 
 import javax.ws.rs.HttpMethod;

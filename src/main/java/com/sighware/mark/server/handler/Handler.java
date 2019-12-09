@@ -3,10 +3,10 @@ package com.sighware.mark.server.handler;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.command.Command;
-import com.sighware.mark.server.util.DynamoDBAdapter;
 import com.sighware.mark.server.model.Error;
-import com.sighware.mark.server.util.JsonUtil;
+import com.sighware.mark.server.util.DynamoDBAdapter;
 import org.apache.log4j.Logger;
+import static com.sighware.mark.server.util.JsonUtil.toJson;
 
 import java.io.IOException;
 
@@ -27,13 +27,12 @@ public abstract class Handler {
         AwsProxyResponse response = new AwsProxyResponse();
         response.addHeader("Content-Type", "application/toJson");
         try {
-            json = JsonUtil.toJson(command.persist());
+            json = toJson(command.persist());
             response.setStatusCode(statusCode);
         } catch (Exception e) {
             log.error(e.getMessage(), e);
             response.setStatusCode(500);
-            Error err = new Error("500", "Internal Server Error", "Internal Server Error");
-            json = err.toJson();
+            json = toJson(new Error("500", "Internal Server Error", "Internal Server Error"));
         }
         response.setBody(json);
         return response;
