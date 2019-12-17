@@ -24,6 +24,6 @@ public class AddressUpdatedCommandTest {
         RegistrationNumber rn = TestHelper.buildRegistrationNumber();
         AddressUpdateCommand ec = new AddressUpdateCommand(new AddressUpdatedEvent(rn),
                 DynamoDBAdapter.getInstance().getDynamoDBMapper());
-         ec.persist();
+        ec.persist();
     }
 }

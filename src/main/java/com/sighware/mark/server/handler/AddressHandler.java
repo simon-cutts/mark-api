@@ -19,7 +19,6 @@ public class AddressHandler extends Handler {
     }
 
     public AwsProxyResponse handle(AwsProxyRequest request) {
-        log.info("AddressHandler");
 
         if (request.getHttpMethod().equals(HttpMethod.POST)) {
             // Get the object from toJson

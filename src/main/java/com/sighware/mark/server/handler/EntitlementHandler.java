@@ -19,7 +19,6 @@ public class EntitlementHandler extends Handler {
     }
 
     public AwsProxyResponse handle(AwsProxyRequest request) {
-        log.info("EntitlementHandler");
 
         if (request.getHttpMethod().equals(HttpMethod.POST)) {
             // Get the object from toJson

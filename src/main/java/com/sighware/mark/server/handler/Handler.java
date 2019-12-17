@@ -7,6 +7,7 @@ import com.sighware.mark.server.model.Error;
 import com.sighware.mark.server.util.DynamoDBAdapter;
 import org.apache.log4j.Logger;
 
+import javax.ws.rs.core.MediaType;
 import java.io.IOException;
 
 import static com.sighware.mark.server.util.JsonUtil.toJson;
@@ -26,7 +27,7 @@ public abstract class Handler {
     protected AwsProxyResponse getAwsProxyResponse(Command command, int statusCode) {
         String json;
         AwsProxyResponse response = new AwsProxyResponse();
-        response.addHeader("Content-Type", "application/json");
+        response.addHeader("Content-Type", MediaType.APPLICATION_JSON);
         try {
             json = toJson(command.persist());
             response.setStatusCode(statusCode);

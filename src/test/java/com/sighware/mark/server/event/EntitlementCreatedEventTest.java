@@ -1,7 +1,6 @@
 package com.sighware.mark.server.event;
 
 import com.sighware.mark.server.TestHelper;
-import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.model.RegistrationNumberDocument;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,8 +12,7 @@ class EntitlementCreatedEventTest {
 
     @Test
     void testJson() {
-        RegistrationNumber rn = TestHelper.buildRegistrationNumber();
-        String json = toJson(new AddressUpdatedEvent(rn));
+        String json = toJson(new AddressUpdatedEvent(TestHelper.buildRegistrationNumber()));
         toObject(json, RegistrationNumberEvent.class);
         try {
             toObject(json, RegistrationNumberDocument.class);

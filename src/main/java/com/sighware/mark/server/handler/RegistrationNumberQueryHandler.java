@@ -9,6 +9,7 @@ import com.sighware.mark.server.util.JsonUtil;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.HttpMethod;
+import javax.ws.rs.core.MediaType;
 
 public class RegistrationNumberQueryHandler {
     protected static final Logger log = Logger.getLogger(RegistrationNumberQueryHandler.class);
@@ -29,7 +30,7 @@ public class RegistrationNumberQueryHandler {
             String mark = request.getPath().substring(s + 1, e);
 
             AwsProxyResponse response = new AwsProxyResponse();
-            response.addHeader("Content-Type", "application/json");
+            response.addHeader("Content-Type", MediaType.APPLICATION_JSON);
 
             try {
                 RegistrationNumberQuery query = new RegistrationNumberQuery(mark, adapter.getDynamoDBMapper());

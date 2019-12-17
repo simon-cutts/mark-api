@@ -3,7 +3,9 @@ package com.sighware.mark.server.handler;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.TestHelper;
+import com.sighware.mark.server.command.AddressUpdateCommand;
 import com.sighware.mark.server.command.EntitlementCreateCommand;
+import com.sighware.mark.server.event.AddressUpdatedEvent;
 import com.sighware.mark.server.event.EntitlementCreatedEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.util.DynamoDBAdapter;
@@ -16,7 +18,7 @@ import javax.ws.rs.HttpMethod;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class RegistrationNumberQueryHandlerTest {
+class RegistrationNumberQueryEventHandlerTest {
 
     @BeforeEach
     void setUp() {
@@ -33,14 +35,20 @@ class RegistrationNumberQueryHandlerTest {
                 DynamoDBAdapter.getInstance().getDynamoDBMapper());
         RegistrationNumber reg = ec.persist();
 
+        AddressUpdateCommand ac = new AddressUpdateCommand(new AddressUpdatedEvent(reg),
+                DynamoDBAdapter.getInstance().getDynamoDBMapper());
+        ec.persist();
+
+        String mark = reg.getMark();
+
         AwsProxyRequest request = new AwsProxyRequest();
         request.setHttpMethod(HttpMethod.GET);
-        request.setPath(Router.REGISTRATION_NUMBER_PATH + reg.getMark());
+        request.setPath(Router.REGISTRATION_NUMBER_EVENT_PATH + reg.getMark());
 
         AwsProxyResponse response = new Router().handleRequest(request, null);
 
         assertEquals(response.getStatusCode(), 200);
-        assertTrue(response.getBody().startsWith("{\"mark\""));
+        assertTrue(response.getBody().startsWith("{\"events\":[{\"createTime\""));
     }
 
     @Test
@@ -48,7 +56,7 @@ class RegistrationNumberQueryHandlerTest {
 
         AwsProxyRequest request = new AwsProxyRequest();
         request.setHttpMethod(HttpMethod.GET);
-        request.setPath(Router.REGISTRATION_NUMBER_PATH);
+        request.setPath(Router.REGISTRATION_NUMBER_EVENT_PATH);
 
         AwsProxyResponse response = new Router().handleRequest(request, null);
 

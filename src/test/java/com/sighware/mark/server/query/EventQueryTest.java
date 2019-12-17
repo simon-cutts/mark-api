@@ -11,7 +11,6 @@ import com.sighware.mark.server.event.RegistrationNumberEvent;
 import com.sighware.mark.server.event.RegistrationNumberEvents;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.util.DynamoDBAdapter;
-import com.sighware.mark.server.util.JsonUtil;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
