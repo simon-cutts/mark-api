@@ -8,7 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class AddressUpdatedCommandTest {
+public class AddressUpdatedCommandTest {
 
     @BeforeEach
     void setUp() {
@@ -19,11 +19,11 @@ class AddressUpdatedCommandTest {
     }
 
     @Test
-    public RegistrationNumber persist() {
+    public void persist() {
 
         RegistrationNumber rn = TestHelper.buildRegistrationNumber();
         AddressUpdateCommand ec = new AddressUpdateCommand(new AddressUpdatedEvent(rn),
                 DynamoDBAdapter.getInstance().getDynamoDBMapper());
-        return ec.persist();
+         ec.persist();
     }
 }

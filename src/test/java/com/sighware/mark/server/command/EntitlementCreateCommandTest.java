@@ -19,11 +19,11 @@ public class EntitlementCreateCommandTest {
     }
 
     @Test
-    public RegistrationNumber persist() {
+    public void persist() {
 
         RegistrationNumber rn = TestHelper.buildRegistrationNumber();
         EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(rn),
                 DynamoDBAdapter.getInstance().getDynamoDBMapper());
-        return ec.persist();
+        ec.persist();
     }
 }

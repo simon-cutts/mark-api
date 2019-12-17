@@ -6,9 +6,10 @@ import com.sighware.mark.server.command.Command;
 import com.sighware.mark.server.model.Error;
 import com.sighware.mark.server.util.DynamoDBAdapter;
 import org.apache.log4j.Logger;
-import static com.sighware.mark.server.util.JsonUtil.toJson;
 
 import java.io.IOException;
+
+import static com.sighware.mark.server.util.JsonUtil.toJson;
 
 /**
  * Parent Handler for managing interaction between HTTP and business logic
@@ -25,7 +26,7 @@ public abstract class Handler {
     protected AwsProxyResponse getAwsProxyResponse(Command command, int statusCode) {
         String json;
         AwsProxyResponse response = new AwsProxyResponse();
-        response.addHeader("Content-Type", "application/toJson");
+        response.addHeader("Content-Type", "application/json");
         try {
             json = toJson(command.persist());
             response.setStatusCode(statusCode);

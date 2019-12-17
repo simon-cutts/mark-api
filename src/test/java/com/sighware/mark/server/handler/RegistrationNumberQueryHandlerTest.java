@@ -2,7 +2,10 @@ package com.sighware.mark.server.handler;
 
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
+import com.sighware.mark.server.TestHelper;
+import com.sighware.mark.server.command.EntitlementCreateCommand;
 import com.sighware.mark.server.command.EntitlementCreateCommandTest;
+import com.sighware.mark.server.event.EntitlementCreatedEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.util.DynamoDBAdapter;
 import org.junit.jupiter.api.AfterEach;
@@ -11,7 +14,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.HttpMethod;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RegistrationNumberQueryHandlerTest {
 
@@ -26,7 +30,11 @@ class RegistrationNumberQueryHandlerTest {
     @Test
     void testGet() {
 
-        RegistrationNumber reg = new EntitlementCreateCommandTest().persist();
+        RegistrationNumber rn = TestHelper.buildRegistrationNumber();
+
+        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(rn),
+                DynamoDBAdapter.getInstance().getDynamoDBMapper());
+        RegistrationNumber reg = ec.persist();
 
         AwsProxyRequest request = new AwsProxyRequest();
         request.setHttpMethod(HttpMethod.GET);
@@ -50,6 +58,6 @@ class RegistrationNumberQueryHandlerTest {
         AwsProxyResponse response = handler.handle(request);
 
         assertEquals(response.getStatusCode(), 204);
-        assertEquals("",response.getBody());
+        assertEquals("", response.getBody());
     }
 }

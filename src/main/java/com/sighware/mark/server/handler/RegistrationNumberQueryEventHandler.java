@@ -3,19 +3,19 @@ package com.sighware.mark.server.handler;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
-import com.sighware.mark.server.query.RegistrationNumberQuery;
+import com.sighware.mark.server.query.EventQuery;
 import com.sighware.mark.server.util.DynamoDBAdapter;
 import com.sighware.mark.server.util.JsonUtil;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.HttpMethod;
 
-public class RegistrationNumberQueryHandler {
-    protected static final Logger log = Logger.getLogger(RegistrationNumberQueryHandler.class);
+public class RegistrationNumberQueryEventHandler {
+    protected static final Logger log = Logger.getLogger(RegistrationNumberQueryEventHandler.class);
 
     protected DynamoDBAdapter adapter;
 
-    public RegistrationNumberQueryHandler(DynamoDBAdapter adapter) {
+    public RegistrationNumberQueryEventHandler(DynamoDBAdapter adapter) {
         this.adapter = adapter;
     }
 
@@ -32,7 +32,7 @@ public class RegistrationNumberQueryHandler {
             response.addHeader("Content-Type", "application/json");
 
             try {
-                RegistrationNumberQuery query = new RegistrationNumberQuery(mark, adapter.getDynamoDBMapper());
+                EventQuery query = new EventQuery(adapter.getDynamoDBMapper(), mark);
                 response.setStatusCode(200);
                 response.setBody(JsonUtil.toJson(query.get()));
 

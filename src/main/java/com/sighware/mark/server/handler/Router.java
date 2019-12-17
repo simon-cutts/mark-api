@@ -9,6 +9,7 @@ import org.apache.log4j.Logger;
 
 public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse> {
     public static final String REGISTRATION_NUMBER_PATH = "/mark/v1/registrationNumber/";
+    public static final String REGISTRATION_NUMBER_EVENT_PATH = "/mark/v1/event/registrationNumber/";
     public static final String ENTITLEMENT_PATH = "/mark/v1/entitlement";
     public static final String ENTITLEMENT_ADDRESS_PATH = "/mark/v1/entitlement/address";
 
@@ -22,6 +23,9 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
 
             if (request.getPath().contains(REGISTRATION_NUMBER_PATH)) {
                 return new RegistrationNumberQueryHandler(DynamoDBAdapter.getInstance()).handle(request);
+
+            } else if (request.getPath().contains(REGISTRATION_NUMBER_EVENT_PATH)) {
+                return new RegistrationNumberQueryEventHandler(DynamoDBAdapter.getInstance()).handle(request);
 
             } else {
 

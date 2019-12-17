@@ -4,7 +4,7 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
- * Allows a RegistrationNumber to be persisted as a toJson document in the RegistrationNumberEvent table, wrapped
+ * Allows a RegistrationNumber to be persisted as a json document in the RegistrationNumberEvent table, wrapped
  * within an event
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
