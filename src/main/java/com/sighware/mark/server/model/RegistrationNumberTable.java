@@ -12,6 +12,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @DynamoDBTable(tableName = "RegistrationNumber")
 public class RegistrationNumberTable implements RegistrationNumber {
     private String mark;
+    private boolean lock;
     private String status;
     private String eventTime;
     private Double price;
@@ -26,6 +27,10 @@ public class RegistrationNumberTable implements RegistrationNumber {
     public void setMark(String mark) {
         this.mark = mark;
     }
+
+    public boolean isLock() { return lock; }
+
+    public void setLock(boolean lock) { this.lock = lock; }
 
     public String getStatus() {
         return status;

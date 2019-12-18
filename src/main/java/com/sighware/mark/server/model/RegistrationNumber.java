@@ -6,6 +6,10 @@ public interface RegistrationNumber {
 
     void setMark(String mark);
 
+    boolean isLock();
+
+    void setLock(boolean mark);
+
     String getStatus();
 
     void setStatus(String status);

@@ -16,7 +16,9 @@ import java.time.ZonedDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class RebuildCommandTest {
+class RebuildCommandTest {
+
+    static DynamoDBAdapter DB_ADAPTER = DynamoDBAdapter.getInstance();
 
     @BeforeEach
     void setUp() {
@@ -33,7 +35,7 @@ public class RebuildCommandTest {
 
         RegistrationNumberEvent event = new EntitlementCreatedEvent(regNum);
         Command ec = new EntitlementCreateCommand(event,
-                DynamoDBAdapter.getInstance().getDynamoDBMapper());
+                DB_ADAPTER.getDynamoDBMapper());
         regNum = ec.persist();
 
         // Capture the mark and event time
@@ -48,18 +50,18 @@ public class RebuildCommandTest {
         regNum.getEntitlement().getAddress().setAddLine1(address2);
         event = new AddressUpdatedEvent(regNum);
         ec = new AddressUpdateCommand(event,
-                DynamoDBAdapter.getInstance().getDynamoDBMapper());
+                DB_ADAPTER.getDynamoDBMapper());
         regNum = ec.persist();
 
         ZonedDateTime time2 = ZonedDateTime.parse(event.getCreateTime());
 
         // Test for the first version of the RegistrationNumber
-        RebuildCommand rebuild = new RebuildCommand(DynamoDBAdapter.getInstance().getDynamoDBMapper(), mark, time1);
+        RebuildCommand rebuild = new RebuildCommand(DB_ADAPTER.getDynamoDBMapper(), mark, time1);
         RegistrationNumber reg = rebuild.rebuild();
         assertEquals(address1, reg.getEntitlement().getAddress().getAddLine1());
 
         // Test for the last version of the RegistrationNumber
-        rebuild = new RebuildCommand(DynamoDBAdapter.getInstance().getDynamoDBMapper(), mark);
+        rebuild = new RebuildCommand(DB_ADAPTER.getDynamoDBMapper(), mark);
         reg = rebuild.rebuild();
         assertEquals(address2, reg.getEntitlement().getAddress().getAddLine1());
     }

@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RegistrationNumberQueryEventHandlerTest {
 
+    public static final DynamoDBAdapter DB_ADAPTER = DynamoDBAdapter.getInstance();
+
     @BeforeEach
     void setUp() {
     }
@@ -32,14 +34,12 @@ class RegistrationNumberQueryEventHandlerTest {
     void testGet() {
 
         EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(TestHelper.buildRegistrationNumber()),
-                DynamoDBAdapter.getInstance().getDynamoDBMapper());
+                DB_ADAPTER.getDynamoDBMapper());
         RegistrationNumber reg = ec.persist();
 
         AddressUpdateCommand ac = new AddressUpdateCommand(new AddressUpdatedEvent(reg),
-                DynamoDBAdapter.getInstance().getDynamoDBMapper());
+                DB_ADAPTER.getDynamoDBMapper());
         ec.persist();
-
-        String mark = reg.getMark();
 
         AwsProxyRequest request = new AwsProxyRequest();
         request.setHttpMethod(HttpMethod.GET);

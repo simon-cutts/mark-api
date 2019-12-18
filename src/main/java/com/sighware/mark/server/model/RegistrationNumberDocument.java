@@ -11,6 +11,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @DynamoDBDocument
 public class RegistrationNumberDocument implements RegistrationNumber {
     private String mark;
+    private boolean lock;
     private String status;
     private String eventTime;
     private Double price;
@@ -24,6 +25,10 @@ public class RegistrationNumberDocument implements RegistrationNumber {
     public void setMark(String mark) {
         this.mark = mark;
     }
+
+    public boolean isLock() { return lock; }
+
+    public void setLock(boolean lock) { this.lock = lock; }
 
     public String getStatus() {
         return status;

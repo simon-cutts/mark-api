@@ -18,6 +18,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RegistrationNumberQueryHandlerTest {
 
+    public static final DynamoDBAdapter DB_ADAPTER = DynamoDBAdapter.getInstance();
+
     @BeforeEach
     void setUp() {
     }
@@ -30,7 +32,7 @@ class RegistrationNumberQueryHandlerTest {
     void testGet() {
 
         EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(TestHelper.buildRegistrationNumber()),
-                DynamoDBAdapter.getInstance().getDynamoDBMapper());
+                DB_ADAPTER.getDynamoDBMapper());
         RegistrationNumber reg = ec.persist();
 
         AwsProxyRequest request = new AwsProxyRequest();
@@ -41,6 +43,23 @@ class RegistrationNumberQueryHandlerTest {
 
         assertEquals(response.getStatusCode(), 200);
         assertTrue(response.getBody().startsWith("{\"mark\""));
+    }
+
+    @Test
+    void testBuyGet() {
+
+        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(TestHelper.buildRegistrationNumberSimple()),
+                DB_ADAPTER.getDynamoDBMapper());
+        RegistrationNumber reg = ec.persist();
+
+        AwsProxyRequest request = new AwsProxyRequest();
+        request.setHttpMethod(HttpMethod.GET);
+        request.setPath(Router.REGISTRATION_NUMBER_PATH + reg.getMark());
+
+        AwsProxyResponse response = new Router().handleRequest(request, null);
+
+        assertEquals(response.getStatusCode(), 200);
+        assertTrue(response.getBody().endsWith("\"version\":1}"));
     }
 
     @Test

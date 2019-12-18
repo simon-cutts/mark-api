@@ -26,7 +26,7 @@ public abstract class Command {
      * Persist into RegistrationNumberEvent and RegistrationNumber tables in one transaction
      */
     public RegistrationNumber persist() {
-        log.info("persist");
+        log.info("Persist mark: " + event.getRegistrationNumber().getMark());
 
         TransactionWriteRequest writeRequest = new TransactionWriteRequest();
 

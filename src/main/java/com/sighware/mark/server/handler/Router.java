@@ -9,11 +9,13 @@ import org.apache.log4j.Logger;
 
 public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse> {
     public static final String REGISTRATION_NUMBER_PATH = "/mark/v1/registrationNumber/";
+    public static final String REGISTRATION_NUMBER_LOCK_PATH = "/mark/v1/lock";
     public static final String REGISTRATION_NUMBER_EVENT_PATH = "/mark/v1/event/registrationNumber/";
     public static final String ENTITLEMENT_PATH = "/mark/v1/entitlement";
     public static final String ENTITLEMENT_ADDRESS_PATH = "/mark/v1/entitlement/address";
 
     private static final Logger log = Logger.getLogger(Router.class);
+    private static final DynamoDBAdapter DB_ADAPTER = DynamoDBAdapter.getInstance();
 
     @Override
     public AwsProxyResponse handleRequest(AwsProxyRequest request, Context context) {
@@ -32,10 +34,13 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
                 switch (request.getPath()) {
 
                     case ENTITLEMENT_PATH:
-                        return new EntitlementHandler(DynamoDBAdapter.getInstance()).handle(request);
+                        return new EntitlementHandler(DB_ADAPTER).handle(request);
 
                     case ENTITLEMENT_ADDRESS_PATH:
-                        return new AddressHandler(DynamoDBAdapter.getInstance()).handle(request);
+                        return new AddressHandler(DB_ADAPTER).handle(request);
+
+                    case REGISTRATION_NUMBER_LOCK_PATH:
+                        return new RegistrationNumberLockHandler(DB_ADAPTER).handle(request);
 
                     default:
                         return new AwsProxyResponse(404);

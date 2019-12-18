@@ -34,6 +34,7 @@ public class RegistrationNumberConverter {
 
     private static void convert(RegistrationNumber source, RegistrationNumber target) {
         target.setMark(source.getMark());
+        target.setLock(source.isLock());
         target.setEntitlement(source.getEntitlement());
         target.setPrice(source.getPrice());
         target.setStatus(source.getStatus());

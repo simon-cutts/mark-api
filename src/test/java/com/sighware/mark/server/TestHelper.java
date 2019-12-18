@@ -14,19 +14,18 @@ import java.util.Random;
 
 public class TestHelper {
 
-    public static RegistrationNumber buildRegistrationNumber() {
-        String time = ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT);
+    private TestHelper() {
+    }
 
-        RegistrationNumber m = new RegistrationNumberDocument();
-        m.setMark(randomString(15));
-        m.setPrice(299.00);
-        m.setEventTime(ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
+    public static RegistrationNumber buildRegistrationNumber() {
+
+        RegistrationNumber m = buildRegistrationNumberSimple();
 
         Entitlement ent = new Entitlement();
         ent.setNomineeName("Mr John Jones");
         ent.setPurchaserName("Felicity Jones");
         ent.setCertificateNo(randomString(20));
-        ent.setCertificateTime(time);
+        ent.setCertificateTime(m.getEventTime());
 
         Address add = new Address();
         add.setAddLine1("2 My Street");
@@ -39,8 +38,20 @@ public class TestHelper {
         return m;
     }
 
+    public static RegistrationNumber buildRegistrationNumberSimple() {
+
+        RegistrationNumber m = new RegistrationNumberDocument();
+        m.setMark(randomString(15));
+        m.setPrice(299.00);
+        m.setLock(false);
+        m.setEventTime(ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
+
+        return m;
+    }
+
     public static String randomString(int size) {
-        final String alphabet = " 123456789ABC EFGHJ LMPQRSTUVW YZ";
+        final String alphabet = "12345 789ABC EFGHJLMPQR" +
+                "STUVW YZ";
         final int N = alphabet.length();
 
         Random r = new Random();
