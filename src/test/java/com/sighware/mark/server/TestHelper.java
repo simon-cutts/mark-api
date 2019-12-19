@@ -6,10 +6,8 @@ import com.sighware.mark.server.model.Address;
 import com.sighware.mark.server.model.Entitlement;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.model.RegistrationNumberDocument;
+import com.sighware.mark.server.util.Time;
 
-import java.time.ZoneOffset;
-import java.time.ZonedDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 public class TestHelper {
@@ -24,7 +22,7 @@ public class TestHelper {
         Entitlement ent = new Entitlement();
         ent.setNomineeName("Mr John Jones");
         ent.setPurchaserName("Felicity Jones");
-        ent.setCertificateNo(randomString(20));
+        ent.setCertificateNo(randomString(15));
         ent.setCertificateTime(m.getEventTime());
 
         Address add = new Address();
@@ -41,17 +39,16 @@ public class TestHelper {
     public static RegistrationNumber buildRegistrationNumberSimple() {
 
         RegistrationNumber m = new RegistrationNumberDocument();
-        m.setMark(randomString(15));
+        m.setMark(randomString(10));
         m.setPrice(299.00);
-        m.setLock(false);
-        m.setEventTime(ZonedDateTime.now(ZoneOffset.UTC).format(DateTimeFormatter.ISO_INSTANT));
+        m.setEventTime(Time.getTimestampNow());
 
         return m;
     }
 
     public static String randomString(int size) {
-        final String alphabet = "12345 789ABC EFGHJLMPQR" +
-                "STUVW YZ";
+        final String alphabet = "12345789ABCEFGHJLMPQR" +
+                "STUVWYZ";
         final int N = alphabet.length();
 
         Random r = new Random();

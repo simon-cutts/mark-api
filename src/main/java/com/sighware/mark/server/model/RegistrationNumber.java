@@ -6,10 +6,6 @@ public interface RegistrationNumber {
 
     void setMark(String mark);
 
-    boolean isLock();
-
-    void setLock(boolean mark);
-
     String getStatus();
 
     void setStatus(String status);
@@ -21,6 +17,10 @@ public interface RegistrationNumber {
     Double getPrice();
 
     void setPrice(Double price);
+
+    String getLockTime();
+
+    void setLockTime(String lockTime);
 
     Long getVersion();
 

@@ -15,7 +15,7 @@ sam logs -n SomApiAppFunction --stack-name mark-api
 
 time curl -H "Content-Type: application/json" -X POST https://v0yn3c4ark.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement -d '
 {
-  "mark": "AFC007",
+  "mark": "AFC0088",
   "eventTime": "2019-11-29T09:26:43.837Z",
   "price": 299,
   "entitlement": {
@@ -31,3 +31,7 @@ time curl -H "Content-Type: application/json" -X POST https://v0yn3c4ark.execute
     }
   }
 }'
+
+curl https://v0yn3c4ark.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/registrationNumber/AFC0088
+
+curl https://v0yn3c4ark.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/event/registrationNumber/AFC0088

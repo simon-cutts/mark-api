@@ -29,7 +29,6 @@ public class RegistrationNumberQuery {
         try {
             return mapper.load(RegistrationNumberTable.class, mark);
         } catch (Exception e) {
-//            e.printStackTrace();
             throw new RegistrationNumberNotFoundException("Unable to find registration number " + mark, e);
         }
     }

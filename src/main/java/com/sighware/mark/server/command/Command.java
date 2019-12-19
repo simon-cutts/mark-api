@@ -14,8 +14,8 @@ import org.apache.log4j.Logger;
 public abstract class Command {
     static final Logger log = Logger.getLogger(Command.class);
 
-    private final DynamoDBMapper mapper;
-    private final RegistrationNumberEvent event;
+    protected final DynamoDBMapper mapper;
+    protected final RegistrationNumberEvent event;
 
     public Command(RegistrationNumberEvent event, DynamoDBMapper mapper) {
         this.event = event;

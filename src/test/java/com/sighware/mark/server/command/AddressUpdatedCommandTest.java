@@ -22,7 +22,7 @@ class AddressUpdatedCommandTest {
     public void persist() {
 
         RegistrationNumber rn = TestHelper.buildRegistrationNumber();
-        AddressUpdateCommand ec = new AddressUpdateCommand(new AddressUpdatedEvent(rn),
+        RegistrationNumberUpdateCommand ec = new RegistrationNumberUpdateCommand(new AddressUpdatedEvent(rn),
                 DynamoDBAdapter.getInstance().getDynamoDBMapper());
         ec.persist();
     }

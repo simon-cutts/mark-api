@@ -1,9 +1,9 @@
 package com.sighware.mark.server.query;
 
 import com.sighware.mark.server.TestHelper;
-import com.sighware.mark.server.command.AddressUpdateCommand;
 import com.sighware.mark.server.command.Command;
 import com.sighware.mark.server.command.EntitlementCreateCommand;
+import com.sighware.mark.server.command.RegistrationNumberUpdateCommand;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
 import com.sighware.mark.server.event.AddressUpdatedEvent;
 import com.sighware.mark.server.event.EntitlementCreatedEvent;
@@ -42,7 +42,7 @@ class EventQueryTest {
         String address2 = "5 Your Street";
         regNum.getEntitlement().getAddress().setAddLine1(address2);
         event = new AddressUpdatedEvent(regNum);
-        ec = new AddressUpdateCommand(event,
+        ec = new RegistrationNumberUpdateCommand(event,
                 DB_ADAPTER.getDynamoDBMapper());
         regNum = ec.persist();
 
@@ -60,9 +60,6 @@ class EventQueryTest {
         assertEquals(2, list.getEvents().size());
         assertEquals("EntitlementCreatedEvent", list.getEvents().get(0).getEventName());
         assertEquals("AddressUpdatedEvent", list.getEvents().get(1).getEventName());
-
-//        String json = JsonUtil.toJson(list);
-//        System.out.println(json);
     }
 
 }

@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse> {
     public static final String REGISTRATION_NUMBER_PATH = "/mark/v1/registrationNumber/";
     public static final String REGISTRATION_NUMBER_LOCK_PATH = "/mark/v1/lock";
+    public static final String REGISTRATION_NUMBER_UNLOCK_PATH = "/mark/v1/unlock";
     public static final String REGISTRATION_NUMBER_EVENT_PATH = "/mark/v1/event/registrationNumber/";
     public static final String ENTITLEMENT_PATH = "/mark/v1/entitlement";
     public static final String ENTITLEMENT_ADDRESS_PATH = "/mark/v1/entitlement/address";

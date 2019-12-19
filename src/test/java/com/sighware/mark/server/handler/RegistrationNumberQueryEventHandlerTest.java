@@ -3,8 +3,8 @@ package com.sighware.mark.server.handler;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.TestHelper;
-import com.sighware.mark.server.command.AddressUpdateCommand;
 import com.sighware.mark.server.command.EntitlementCreateCommand;
+import com.sighware.mark.server.command.RegistrationNumberUpdateCommand;
 import com.sighware.mark.server.event.AddressUpdatedEvent;
 import com.sighware.mark.server.event.EntitlementCreatedEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
@@ -37,7 +37,7 @@ class RegistrationNumberQueryEventHandlerTest {
                 DB_ADAPTER.getDynamoDBMapper());
         RegistrationNumber reg = ec.persist();
 
-        AddressUpdateCommand ac = new AddressUpdateCommand(new AddressUpdatedEvent(reg),
+        RegistrationNumberUpdateCommand ac = new RegistrationNumberUpdateCommand(new AddressUpdatedEvent(reg),
                 DB_ADAPTER.getDynamoDBMapper());
         ec.persist();
 

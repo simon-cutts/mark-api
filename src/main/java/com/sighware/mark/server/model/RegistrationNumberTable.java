@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @DynamoDBTable(tableName = "RegistrationNumber")
 public class RegistrationNumberTable implements RegistrationNumber {
     private String mark;
-    private boolean lock;
     private String status;
     private String eventTime;
+    private String lockTime;
     private Double price;
     private Long version;
     private Entitlement entitlement;
@@ -27,10 +27,6 @@ public class RegistrationNumberTable implements RegistrationNumber {
     public void setMark(String mark) {
         this.mark = mark;
     }
-
-    public boolean isLock() { return lock; }
-
-    public void setLock(boolean lock) { this.lock = lock; }
 
     public String getStatus() {
         return status;
@@ -54,6 +50,16 @@ public class RegistrationNumberTable implements RegistrationNumber {
 
     public void setPrice(Double price) {
         this.price = price;
+    }
+
+    @Override
+    public String getLockTime() {
+        return lockTime;
+    }
+
+    @Override
+    public void setLockTime(String lockTime) {
+        this.lockTime = lockTime;
     }
 
     @DynamoDBVersionAttribute
