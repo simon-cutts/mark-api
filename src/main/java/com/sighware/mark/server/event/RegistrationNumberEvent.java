@@ -42,11 +42,11 @@ public class RegistrationNumberEvent {
         this.mark = mark;
     }
 
+    @DynamoDBRangeKey(attributeName = "createTime")
     public String getCreateTime() {
         return createTime;
     }
 
-    @DynamoDBRangeKey(attributeName = "createTime")
     public void setCreateTime(String createTime) {
         this.createTime = createTime;
     }

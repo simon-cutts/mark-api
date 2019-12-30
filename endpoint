@@ -1,10 +1,8 @@
 WARNING! These are just my run notes
 
-mvn clean package ; sam package --output-template-file packaged.yml --s3-bucket customer-record \
-    ; sam deploy --template-file ./packaged.yml --stack-name mark-api --capabilities CAPABILITY_IAM \
-    ; aws cloudformation describe-stacks --stack-name mark-api
+mvn clean package ; sam package --output-template-file packaged.yml --s3-bucket customer-record ; sam deploy --template-file ./packaged.yml --stack-name mark-api --capabilities CAPABILITY_IAM  ; aws cloudformation describe-stacks --stack-name mark-api
 
-time  curl https://v0yn3c4ark.execute-api.eu-west-2.amazonaws.com/Prod
+time  curl https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod
 
 aws cloudformation describe-stack-events --stack-name mark-api
 
@@ -13,7 +11,7 @@ aws cloudformation delete-stack --stack-name mark-api
 sam logs -n SomApiAppFunction --stack-name mark-api
 
 
-time curl -H "Content-Type: application/json" -X POST https://v0yn3c4ark.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement -d '
+time curl -H "Content-Type: application/json" -X POST https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement -d '
 {
   "mark": "AFC0088",
   "eventTime": "2019-11-29T09:26:43.837Z",
@@ -32,6 +30,6 @@ time curl -H "Content-Type: application/json" -X POST https://v0yn3c4ark.execute
   }
 }'
 
-curl https://v0yn3c4ark.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/registrationNumber/AFC0088
+curl https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/registrationNumber/AFC0088
 
-curl https://v0yn3c4ark.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/event/registrationNumber/AFC0088
+curl https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/event/registrationNumber/AFC0088

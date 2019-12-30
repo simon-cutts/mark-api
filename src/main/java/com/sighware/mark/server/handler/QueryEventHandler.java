@@ -12,12 +12,12 @@ import javax.ws.rs.HttpMethod;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
-public class RegistrationNumberQueryEventHandler {
-    protected static final Logger log = Logger.getLogger(RegistrationNumberQueryEventHandler.class);
+public class QueryEventHandler {
+    protected static final Logger log = Logger.getLogger(QueryEventHandler.class);
 
     protected DynamoDBAdapter adapter;
 
-    public RegistrationNumberQueryEventHandler(DynamoDBAdapter adapter) {
+    public QueryEventHandler(DynamoDBAdapter adapter) {
         this.adapter = adapter;
     }
 

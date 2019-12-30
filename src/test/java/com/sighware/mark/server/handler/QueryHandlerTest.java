@@ -4,8 +4,6 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.TestHelper;
 import com.sighware.mark.server.command.EntitlementCreateCommand;
-import com.sighware.mark.server.command.RegistrationNumberUpdateCommand;
-import com.sighware.mark.server.event.AddressUpdatedEvent;
 import com.sighware.mark.server.event.EntitlementCreatedEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.util.DynamoDBAdapter;
@@ -18,7 +16,7 @@ import javax.ws.rs.HttpMethod;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class RegistrationNumberQueryEventHandlerTest {
+class QueryHandlerTest {
 
     public static final DynamoDBAdapter DB_ADAPTER = DynamoDBAdapter.getInstance();
 
@@ -37,18 +35,32 @@ class RegistrationNumberQueryEventHandlerTest {
                 DB_ADAPTER.getDynamoDBMapper());
         RegistrationNumber reg = ec.persist();
 
-        RegistrationNumberUpdateCommand ac = new RegistrationNumberUpdateCommand(new AddressUpdatedEvent(reg),
+        AwsProxyRequest request = new AwsProxyRequest();
+        request.setHttpMethod(HttpMethod.GET);
+        request.setPath(Router.REGISTRATION_NUMBER_PATH + reg.getMark());
+
+        AwsProxyResponse response = new Router().handleRequest(request, null);
+
+
+        System.out.println(response.getBody());
+        assertTrue(response.getBody().startsWith("{\"mark\""));
+    }
+
+    @Test
+    void testBuyGet() {
+
+        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(TestHelper.buildRegistrationNumberSimple()),
                 DB_ADAPTER.getDynamoDBMapper());
-        ec.persist();
+        RegistrationNumber reg = ec.persist();
 
         AwsProxyRequest request = new AwsProxyRequest();
         request.setHttpMethod(HttpMethod.GET);
-        request.setPath(Router.REGISTRATION_NUMBER_EVENT_PATH + reg.getMark());
+        request.setPath(Router.REGISTRATION_NUMBER_PATH + reg.getMark());
 
         AwsProxyResponse response = new Router().handleRequest(request, null);
 
         assertEquals(response.getStatusCode(), 200);
-        assertTrue(response.getBody().startsWith("{\"events\":[{\"createTime\""));
+        assertTrue(response.getBody().endsWith("\"version\":1}"));
     }
 
     @Test
@@ -56,7 +68,7 @@ class RegistrationNumberQueryEventHandlerTest {
 
         AwsProxyRequest request = new AwsProxyRequest();
         request.setHttpMethod(HttpMethod.GET);
-        request.setPath(Router.REGISTRATION_NUMBER_EVENT_PATH);
+        request.setPath(Router.REGISTRATION_NUMBER_PATH);
 
         AwsProxyResponse response = new Router().handleRequest(request, null);
 

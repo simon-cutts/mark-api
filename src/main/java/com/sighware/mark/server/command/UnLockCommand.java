@@ -8,8 +8,12 @@ import com.sighware.mark.server.event.RegistrationNumberEvent;
  *
  * @author Simon Cutts
  */
-public class RegistrationNumberUpdateCommand extends Command {
-    public RegistrationNumberUpdateCommand(RegistrationNumberEvent event, DynamoDBMapper mapper) {
+public class UnLockCommand extends Command {
+    public UnLockCommand(RegistrationNumberEvent event, DynamoDBMapper mapper) {
         super(event, mapper);
+    }
+
+    public void process() {
+        event.getRegistrationNumber().setLockTime(null);
     }
 }

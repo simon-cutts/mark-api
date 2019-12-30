@@ -13,8 +13,8 @@ import com.sighware.mark.server.util.Time;
  *
  * @author Simon Cutts
  */
-public class RegistrationNumberLockCommand extends Command {
-    public RegistrationNumberLockCommand(RegistrationNumberEvent event, DynamoDBMapper mapper) {
+public class LockCommand extends Command {
+    public LockCommand(RegistrationNumberEvent event, DynamoDBMapper mapper) {
         super(event, mapper);
     }
 

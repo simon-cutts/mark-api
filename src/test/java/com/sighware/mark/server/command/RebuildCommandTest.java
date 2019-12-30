@@ -49,7 +49,7 @@ class RebuildCommandTest {
         String address2 = "5 Your Street";
         regNum.getEntitlement().getAddress().setAddLine1(address2);
         event = new AddressUpdatedEvent(regNum);
-        ec = new RegistrationNumberUpdateCommand(event,
+        ec = new UpdateCommand(event,
                 DB_ADAPTER.getDynamoDBMapper());
         regNum = ec.persist();
 

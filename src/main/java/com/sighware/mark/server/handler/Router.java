@@ -8,12 +8,13 @@ import com.sighware.mark.server.util.DynamoDBAdapter;
 import org.apache.log4j.Logger;
 
 public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse> {
-    public static final String REGISTRATION_NUMBER_PATH = "/mark/v1/registrationNumber/";
-    public static final String REGISTRATION_NUMBER_LOCK_PATH = "/mark/v1/lock";
-    public static final String REGISTRATION_NUMBER_UNLOCK_PATH = "/mark/v1/unlock";
-    public static final String REGISTRATION_NUMBER_EVENT_PATH = "/mark/v1/event/registrationNumber/";
+    public static final String PARENT_PATH = "/mark/v1";
+    public static final String LOCK_PATH = "/mark/v1/lock";
+    public static final String UNLOCK_PATH = "/mark/v1/unlock";
     public static final String ENTITLEMENT_PATH = "/mark/v1/entitlement";
     public static final String ENTITLEMENT_ADDRESS_PATH = "/mark/v1/entitlement/address";
+    public static final String REGISTRATION_NUMBER_PATH = "/mark/v1/registrationNumber/";
+    public static final String REGISTRATION_NUMBER_EVENT_PATH = "/mark/v1/event/registrationNumber/";
 
     private static final Logger log = Logger.getLogger(Router.class);
     private static final DynamoDBAdapter DB_ADAPTER = DynamoDBAdapter.getInstance();
@@ -25,10 +26,10 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
             log.info(request.getPath());
 
             if (request.getPath().contains(REGISTRATION_NUMBER_PATH)) {
-                return new RegistrationNumberQueryHandler(DynamoDBAdapter.getInstance()).handle(request);
+                return new QueryHandler(DynamoDBAdapter.getInstance()).handle(request);
 
             } else if (request.getPath().contains(REGISTRATION_NUMBER_EVENT_PATH)) {
-                return new RegistrationNumberQueryEventHandler(DynamoDBAdapter.getInstance()).handle(request);
+                return new QueryEventHandler(DynamoDBAdapter.getInstance()).handle(request);
 
             } else {
 
@@ -40,8 +41,14 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
                     case ENTITLEMENT_ADDRESS_PATH:
                         return new AddressHandler(DB_ADAPTER).handle(request);
 
-                    case REGISTRATION_NUMBER_LOCK_PATH:
-                        return new RegistrationNumberLockHandler(DB_ADAPTER).handle(request);
+                    case LOCK_PATH:
+                        return new LockHandler(DB_ADAPTER).handle(request);
+
+                    case UNLOCK_PATH:
+                        return new UnLockHandler(DB_ADAPTER).handle(request);
+
+                    case PARENT_PATH:
+                        return new DeleteHandler(DB_ADAPTER).handle(request);
 
                     default:
                         return new AwsProxyResponse(404);

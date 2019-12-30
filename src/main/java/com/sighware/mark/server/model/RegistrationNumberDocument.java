@@ -18,34 +18,42 @@ public class RegistrationNumberDocument implements RegistrationNumber {
     private Long version;
     private Entitlement entitlement;
 
+    @Override
     public String getMark() {
         return mark;
     }
 
+    @Override
     public void setMark(String mark) {
         this.mark = mark;
     }
 
+    @Override
     public String getStatus() {
         return status;
     }
 
+    @Override
     public void setStatus(String status) {
         this.status = status;
     }
 
+    @Override
     public String getEventTime() {
         return eventTime;
     }
 
+    @Override
     public void setEventTime(String eventTime) {
         this.eventTime = eventTime;
     }
 
+    @Override
     public Double getPrice() {
         return price;
     }
 
+    @Override
     public void setPrice(Double price) {
         this.price = price;
     }
@@ -60,18 +68,22 @@ public class RegistrationNumberDocument implements RegistrationNumber {
         this.lockTime = lockTime;
     }
 
+    @Override
     public Long getVersion() {
         return version;
     }
 
+    @Override
     public void setVersion(Long version) {
         this.version = version;
     }
 
+    @Override
     public Entitlement getEntitlement() {
         return entitlement;
     }
 
+    @Override
     public void setEntitlement(Entitlement entitlement) {
         this.entitlement = entitlement;
     }

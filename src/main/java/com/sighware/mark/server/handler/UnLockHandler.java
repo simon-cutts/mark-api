@@ -2,9 +2,8 @@ package com.sighware.mark.server.handler;
 
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
-import com.sighware.mark.server.command.Command;
-import com.sighware.mark.server.command.UpdateCommand;
-import com.sighware.mark.server.event.AddressUpdatedEvent;
+import com.sighware.mark.server.command.UnLockCommand;
+import com.sighware.mark.server.event.LockEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.model.RegistrationNumberDocument;
 import com.sighware.mark.server.util.DynamoDBAdapter;
@@ -12,24 +11,24 @@ import com.sighware.mark.server.util.JsonUtil;
 
 import javax.ws.rs.HttpMethod;
 
-public class AddressHandler extends Handler {
+public class UnLockHandler extends Handler {
 
-    public AddressHandler(DynamoDBAdapter adapter) {
+    public UnLockHandler(DynamoDBAdapter adapter) {
         super(adapter);
     }
 
     public AwsProxyResponse handle(AwsProxyRequest request) {
 
         if (request.getHttpMethod().equals(HttpMethod.POST)) {
-            // Get the object from toJson
+            // Get the object from json
             RegistrationNumber registrationNumber = JsonUtil.toObject(request.getBody(), RegistrationNumberDocument.class);
 
             // Create the command with the event
-            Command command = new UpdateCommand(
-                    new AddressUpdatedEvent(registrationNumber), adapter.getDynamoDBMapper());
+            UnLockCommand command = new UnLockCommand(
+                    new LockEvent(registrationNumber), adapter.getDynamoDBMapper());
 
-            AwsProxyResponse response = getAwsProxyResponse(command, 200);
-            return response;
+            command.process();
+            return getAwsProxyResponse(command, 200);
         }
         throw new RuntimeException("Not implemented");
     }

@@ -10,6 +10,7 @@ public class JsonUtil {
     private static final ObjectMapper mapper = new ObjectMapper();
 
     public static String toJson(Object object) {
+        if (object == null) return "";
         try {
             return mapper.writeValueAsString(object);
         } catch (JsonProcessingException e) {

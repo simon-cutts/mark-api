@@ -2,10 +2,10 @@ package com.sighware.mark.server.handler;
 
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
-import com.sighware.mark.server.command.RegistrationNumberLockCommand;
+import com.sighware.mark.server.command.LockCommand;
 import com.sighware.mark.server.error.LockFailedException;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
-import com.sighware.mark.server.event.RegistrationNumberLockEvent;
+import com.sighware.mark.server.event.LockEvent;
 import com.sighware.mark.server.model.Error;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.model.RegistrationNumberDocument;
@@ -16,9 +16,9 @@ import javax.ws.rs.HttpMethod;
 
 import static com.sighware.mark.server.util.JsonUtil.toJson;
 
-public class RegistrationNumberLockHandler extends Handler {
+public class LockHandler extends Handler {
 
-    public RegistrationNumberLockHandler(DynamoDBAdapter adapter) {
+    public LockHandler(DynamoDBAdapter adapter) {
         super(adapter);
     }
 
@@ -29,8 +29,8 @@ public class RegistrationNumberLockHandler extends Handler {
             RegistrationNumber registrationNumber = JsonUtil.toObject(request.getBody(), RegistrationNumberDocument.class);
 
             // Create the command with the event
-            RegistrationNumberLockCommand command = new RegistrationNumberLockCommand(
-                    new RegistrationNumberLockEvent(registrationNumber), adapter.getDynamoDBMapper());
+            LockCommand command = new LockCommand(
+                    new LockEvent(registrationNumber), adapter.getDynamoDBMapper());
 
             try {
                 command.process();
