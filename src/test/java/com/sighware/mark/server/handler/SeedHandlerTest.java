@@ -15,7 +15,7 @@ import java.io.IOException;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class EntitlementHandlerTest {
+class SeedHandlerTest {
 
     @BeforeEach
     void setUp() {
@@ -25,18 +25,25 @@ class EntitlementHandlerTest {
     void tearDown() {
     }
 
-    @Test
-    void handle() throws IOException {
-
-        RegistrationNumber reg = Seeder.buildRegistrationNumber();
+//    @Test
+    void handle() {
 
         AwsProxyRequest request = new AwsProxyRequest();
         request.setHttpMethod(HttpMethod.POST);
-        request.setPath(Router.ENTITLEMENT_PATH);
-        request.setBody(new ObjectMapper().writeValueAsString(reg));
+        request.setPath(Router.SEED_PATH);
 
         AwsProxyResponse response = new Router().handleRequest(request, null);
         assertEquals(response.getStatusCode(), 201);
-        assertTrue(response.getBody().startsWith("{\"mark\":"));
+    }
+
+//    @Test
+    void list() {
+        AwsProxyRequest request = new AwsProxyRequest();
+        request.setHttpMethod(HttpMethod.GET);
+        request.setPath(Router.SEED_PATH);
+
+        AwsProxyResponse response = new Router().handleRequest(request, null);
+        assertEquals(response.getStatusCode(), 200);
+        System.out.println(response.getBody());
     }
 }

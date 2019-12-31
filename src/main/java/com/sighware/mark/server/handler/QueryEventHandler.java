@@ -3,7 +3,6 @@ package com.sighware.mark.server.handler;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
-import com.sighware.mark.server.error.ResourceNotFoundException;
 import com.sighware.mark.server.query.EventQuery;
 import com.sighware.mark.server.util.DynamoDBAdapter;
 import com.sighware.mark.server.util.JsonUtil;
@@ -19,7 +18,7 @@ public class QueryEventHandler extends Handler {
     }
 
     @Override
-    public AwsProxyResponse handle(AwsProxyRequest request) throws ResourceNotFoundException {
+    public AwsProxyResponse handle(AwsProxyRequest request) {
 
         if (request.getHttpMethod().equals(HttpMethod.GET)) {
 
@@ -44,6 +43,6 @@ public class QueryEventHandler extends Handler {
 
             return response;
         }
-        throw new ResourceNotFoundException();
+        return new AwsProxyResponse(404);
     }
 }

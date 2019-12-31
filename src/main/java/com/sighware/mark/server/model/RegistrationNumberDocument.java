@@ -1,6 +1,8 @@
 package com.sighware.mark.server.model;
 
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -11,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @DynamoDBDocument
 public class RegistrationNumberDocument implements RegistrationNumber {
     private String mark;
-    private String status;
+    private Status status;
     private String eventTime;
     private String lockTime;
     private Double price;
@@ -29,12 +31,14 @@ public class RegistrationNumberDocument implements RegistrationNumber {
     }
 
     @Override
-    public String getStatus() {
+    @DynamoDBTypeConvertedEnum
+    @DynamoDBAttribute(attributeName="Status")
+    public Status getStatus() {
         return status;
     }
 
     @Override
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

@@ -3,7 +3,6 @@ package com.sighware.mark.server.handler;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.command.Command;
-import com.sighware.mark.server.error.ResourceNotFoundException;
 import com.sighware.mark.server.model.Error;
 import com.sighware.mark.server.util.DynamoDBAdapter;
 import org.apache.log4j.Logger;
@@ -40,5 +39,5 @@ public abstract class Handler {
         return response;
     }
 
-    public abstract AwsProxyResponse handle(AwsProxyRequest request) throws ResourceNotFoundException;
+    public abstract AwsProxyResponse handle(AwsProxyRequest request);
 }

@@ -1,6 +1,5 @@
 package com.sighware.mark.server.query;
 
-import com.sighware.mark.server.TestHelper;
 import com.sighware.mark.server.command.Command;
 import com.sighware.mark.server.command.EntitlementCreateCommand;
 import com.sighware.mark.server.command.UpdateCommand;
@@ -11,6 +10,7 @@ import com.sighware.mark.server.event.RegistrationNumberEvent;
 import com.sighware.mark.server.event.RegistrationNumberEvents;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.util.DynamoDBAdapter;
+import com.sighware.mark.server.util.Seeder;
 import org.junit.jupiter.api.Test;
 
 import java.time.ZonedDateTime;
@@ -24,7 +24,7 @@ class EventQueryTest {
     @Test
     public void get() throws InterruptedException, RegistrationNumberNotFoundException {
 
-        RegistrationNumber regNum = TestHelper.buildRegistrationNumber();
+        RegistrationNumber regNum = Seeder.buildRegistrationNumber();
 
         RegistrationNumberEvent event = new EntitlementCreatedEvent(regNum);
         Command ec = new EntitlementCreateCommand(event,

@@ -2,7 +2,6 @@ package com.sighware.mark.server.handler;
 
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
-import com.sighware.mark.server.TestHelper;
 import com.sighware.mark.server.command.EntitlementCreateCommand;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
 import com.sighware.mark.server.event.EntitlementCreatedEvent;
@@ -10,6 +9,7 @@ import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.query.RegistrationNumberQuery;
 import com.sighware.mark.server.util.DynamoDBAdapter;
 import com.sighware.mark.server.util.JsonUtil;
+import com.sighware.mark.server.util.Seeder;
 import com.sighware.mark.server.util.Time;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -34,7 +34,7 @@ class LockHandlerTest {
     @Test
     void lockUnLockedRegNum() throws RegistrationNumberNotFoundException {
 
-        RegistrationNumber reg = TestHelper.buildRegistrationNumberSimple();
+        RegistrationNumber reg = Seeder.buildRegistrationNumberSimple();
         EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(reg),
                 DB_ADAPTER.getDynamoDBMapper());
         reg = ec.persist();
@@ -56,7 +56,7 @@ class LockHandlerTest {
     @Test
     void lockLockedRegNumFail() throws RegistrationNumberNotFoundException {
 
-        RegistrationNumber reg = TestHelper.buildRegistrationNumberSimple();
+        RegistrationNumber reg = Seeder.buildRegistrationNumberSimple();
         reg.setLockTime(Time.getTimestampNow());
         EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(reg),
                 DB_ADAPTER.getDynamoDBMapper());

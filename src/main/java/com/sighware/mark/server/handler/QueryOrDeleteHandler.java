@@ -5,7 +5,6 @@ import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.command.Command;
 import com.sighware.mark.server.command.DeleteCommand;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
-import com.sighware.mark.server.error.ResourceNotFoundException;
 import com.sighware.mark.server.event.DeleteEvent;
 import com.sighware.mark.server.query.RegistrationNumberQuery;
 import com.sighware.mark.server.util.DynamoDBAdapter;
@@ -22,7 +21,7 @@ public class QueryOrDeleteHandler extends Handler {
     }
 
     @Override
-    public AwsProxyResponse handle(AwsProxyRequest request) throws ResourceNotFoundException {
+    public AwsProxyResponse handle(AwsProxyRequest request) {
         // Get the mark from the path
         int s = request.getPath().lastIndexOf("/");
         int e = request.getPath().length();
@@ -59,6 +58,6 @@ public class QueryOrDeleteHandler extends Handler {
             response.setBody("");
             log.info("Unable to find mark " + mark);
         }
-        throw new ResourceNotFoundException();
+        return new AwsProxyResponse(404);
     }
 }

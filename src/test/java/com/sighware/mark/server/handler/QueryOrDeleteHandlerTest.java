@@ -2,11 +2,11 @@ package com.sighware.mark.server.handler;
 
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
-import com.sighware.mark.server.TestHelper;
 import com.sighware.mark.server.command.EntitlementCreateCommand;
 import com.sighware.mark.server.event.EntitlementCreatedEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.util.DynamoDBAdapter;
+import com.sighware.mark.server.util.Seeder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,7 +30,7 @@ class QueryOrDeleteHandlerTest {
 
     @Test
     void testGet() {
-        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(TestHelper.buildRegistrationNumber()),
+        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(Seeder.buildRegistrationNumber()),
                 DB_ADAPTER.getDynamoDBMapper());
         RegistrationNumber reg = ec.persist();
 
@@ -44,7 +44,7 @@ class QueryOrDeleteHandlerTest {
 
     @Test
     void testBuyGet() {
-        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(TestHelper.buildRegistrationNumberSimple()),
+        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(Seeder.buildRegistrationNumberSimple()),
                 DB_ADAPTER.getDynamoDBMapper());
         RegistrationNumber reg = ec.persist();
 

@@ -4,7 +4,6 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.command.Command;
 import com.sighware.mark.server.command.UpdateCommand;
-import com.sighware.mark.server.error.ResourceNotFoundException;
 import com.sighware.mark.server.event.AddressUpdatedEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.model.RegistrationNumberDocument;
@@ -20,7 +19,7 @@ public class AddressHandler extends Handler {
     }
 
     @Override
-    public AwsProxyResponse handle(AwsProxyRequest request) throws ResourceNotFoundException {
+    public AwsProxyResponse handle(AwsProxyRequest request) {
 
         if (request.getHttpMethod().equals(HttpMethod.POST)) {
             // Get the object from toJson
@@ -30,9 +29,8 @@ public class AddressHandler extends Handler {
             Command command = new UpdateCommand(
                     new AddressUpdatedEvent(registrationNumber), adapter.getDynamoDBMapper());
 
-            AwsProxyResponse response = getAwsProxyResponse(command, 200);
-            return response;
+            return getAwsProxyResponse(command, 200);
         }
-        throw new ResourceNotFoundException();
+        return new AwsProxyResponse(404);
     }
 }

@@ -1,24 +1,24 @@
-package com.sighware.mark.server;
+package com.sighware.mark.server.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sighware.mark.server.model.Address;
-import com.sighware.mark.server.model.Entitlement;
-import com.sighware.mark.server.model.RegistrationNumber;
-import com.sighware.mark.server.model.RegistrationNumberDocument;
-import com.sighware.mark.server.util.Time;
+import com.sighware.mark.server.model.*;
 
 import java.util.Random;
 
-public class TestHelper {
+/**
+ * Utility Seeder class to create registration numbers. Only to be used for test scenarios
+ */
+public class Seeder {
 
-    private TestHelper() {
+    private Seeder() {
     }
 
     public static RegistrationNumber buildRegistrationNumber() {
 
         RegistrationNumber m = buildRegistrationNumberSimple();
 
+        m.setStatus(Status.MARK_ASSIGNED);
         Entitlement ent = new Entitlement();
         ent.setNomineeName("Mr John Jones");
         ent.setPurchaserName("Felicity Jones");
@@ -42,6 +42,7 @@ public class TestHelper {
         m.setMark(randomString(10));
         m.setPrice(299.00);
         m.setEventTime(Time.getTimestampNow());
+        m.setStatus(Status.MARK_AVAILABLE);
 
         return m;
     }
@@ -60,7 +61,7 @@ public class TestHelper {
     }
 
     public static void main(String[] args) throws JsonProcessingException {
-        System.out.println(TestHelper.randomString(20));
-        System.out.println(new ObjectMapper().writeValueAsString(TestHelper.buildRegistrationNumber()));
+        System.out.println(Seeder.randomString(20));
+        System.out.println(new ObjectMapper().writeValueAsString(Seeder.buildRegistrationNumber()));
     }
 }

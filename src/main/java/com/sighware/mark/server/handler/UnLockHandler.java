@@ -3,7 +3,6 @@ package com.sighware.mark.server.handler;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.command.UnLockCommand;
-import com.sighware.mark.server.error.ResourceNotFoundException;
 import com.sighware.mark.server.event.LockEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.model.RegistrationNumberDocument;
@@ -19,7 +18,7 @@ public class UnLockHandler extends Handler {
     }
 
     @Override
-    public AwsProxyResponse handle(AwsProxyRequest request) throws ResourceNotFoundException {
+    public AwsProxyResponse handle(AwsProxyRequest request) {
 
         if (request.getHttpMethod().equals(HttpMethod.POST)) {
             // Get the object from json
@@ -32,6 +31,6 @@ public class UnLockHandler extends Handler {
             command.process();
             return getAwsProxyResponse(command, 200);
         }
-        throw new ResourceNotFoundException();
+        return new AwsProxyResponse(404);
     }
 }

@@ -18,6 +18,15 @@ public class JsonUtil {
         }
     }
 
+    public static String toJsonPretty(Object object) {
+        if (object == null) return "";
+        try {
+            return mapper.writerWithDefaultPrettyPrinter().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
     public static <T> T toObject(String json, Class<T> target) {
         try {
             return mapper.readValue(json, target);

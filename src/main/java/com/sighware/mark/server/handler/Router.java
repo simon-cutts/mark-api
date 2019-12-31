@@ -4,12 +4,12 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
-import com.sighware.mark.server.error.ResourceNotFoundException;
 import com.sighware.mark.server.util.DynamoDBAdapter;
 import org.apache.log4j.Logger;
 
 public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse> {
     public static final String PARENT_PATH = "/mark/v1";
+    public static final String SEED_PATH = PARENT_PATH + "/seed"; // for testing only
     public static final String LOCK_PATH = PARENT_PATH + "/lock";
     public static final String UNLOCK_PATH = PARENT_PATH + "/unlock";
     public static final String ENTITLEMENT_PATH = PARENT_PATH + "/entitlement";
@@ -36,6 +36,9 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
 
                 switch (request.getPath()) {
 
+                    case SEED_PATH:
+                        return new SeedHandler(DB_ADAPTER).handle(request);
+
                     case ENTITLEMENT_PATH:
                         return new EntitlementHandler(DB_ADAPTER).handle(request);
 
@@ -52,8 +55,6 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
                         return new AwsProxyResponse(404);
                 }
             }
-        } catch (ResourceNotFoundException ex) {
-            return new AwsProxyResponse(404);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
             return new AwsProxyResponse(500);

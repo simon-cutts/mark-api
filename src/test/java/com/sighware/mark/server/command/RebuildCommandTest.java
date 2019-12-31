@@ -1,12 +1,12 @@
 package com.sighware.mark.server.command;
 
-import com.sighware.mark.server.TestHelper;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
 import com.sighware.mark.server.event.AddressUpdatedEvent;
 import com.sighware.mark.server.event.EntitlementCreatedEvent;
 import com.sighware.mark.server.event.RegistrationNumberEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.util.DynamoDBAdapter;
+import com.sighware.mark.server.util.Seeder;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,7 +31,7 @@ class RebuildCommandTest {
     @Test
     public void rebuild() throws InterruptedException, RegistrationNumberNotFoundException {
 
-        RegistrationNumber regNum = TestHelper.buildRegistrationNumber();
+        RegistrationNumber regNum = Seeder.buildRegistrationNumber();
 
         RegistrationNumberEvent event = new EntitlementCreatedEvent(regNum);
         Command ec = new EntitlementCreateCommand(event,

@@ -1,8 +1,6 @@
 package com.sighware.mark.server.model;
 
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBHashKey;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTable;
-import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBVersionAttribute;
+import com.amazonaws.services.dynamodbv2.datamodeling.*;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
@@ -12,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 @DynamoDBTable(tableName = "RegistrationNumber")
 public class RegistrationNumberTable implements RegistrationNumber {
     private String mark;
-    private String status;
+    private Status status;
     private String eventTime;
     private String lockTime;
     private Double price;
@@ -31,12 +29,14 @@ public class RegistrationNumberTable implements RegistrationNumber {
     }
 
     @Override
-    public String getStatus() {
+    @DynamoDBTypeConvertedEnum
+    @DynamoDBAttribute(attributeName="Status")
+    public Status getStatus() {
         return status;
     }
 
     @Override
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

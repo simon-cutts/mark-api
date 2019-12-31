@@ -6,9 +6,9 @@ public interface RegistrationNumber {
 
     void setMark(String mark);
 
-    String getStatus();
+    Status getStatus();
 
-    void setStatus(String status);
+    void setStatus(Status status);
 
     String getEventTime();
 
