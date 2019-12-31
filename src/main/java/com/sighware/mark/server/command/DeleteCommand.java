@@ -11,7 +11,8 @@ import com.sighware.mark.server.query.RegistrationNumberQuery;
 import java.util.List;
 
 /**
- * Update command to handle the persistence of both the Event and its payload.
+ * Delete command to remove both RegistrationNumber and all its RegistrationNumberEvents in a single
+ * atomic transaction
  *
  * @author Simon Cutts
  */
@@ -40,7 +41,7 @@ public class DeleteCommand extends Command {
 
             mapper.transactionWrite(writeRequest);
         } catch (RegistrationNumberNotFoundException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e.getMessage(), e);
         }
 
         return null;

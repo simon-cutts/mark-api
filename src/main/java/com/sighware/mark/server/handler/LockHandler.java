@@ -5,6 +5,7 @@ import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.command.LockCommand;
 import com.sighware.mark.server.error.LockFailedException;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
+import com.sighware.mark.server.error.ResourceNotFoundException;
 import com.sighware.mark.server.event.LockEvent;
 import com.sighware.mark.server.model.Error;
 import com.sighware.mark.server.model.RegistrationNumber;
@@ -22,7 +23,8 @@ public class LockHandler extends Handler {
         super(adapter);
     }
 
-    public AwsProxyResponse handle(AwsProxyRequest request) {
+    @Override
+    public AwsProxyResponse handle(AwsProxyRequest request) throws ResourceNotFoundException {
 
         if (request.getHttpMethod().equals(HttpMethod.POST)) {
             // Get the object from json
@@ -41,6 +43,6 @@ public class LockHandler extends Handler {
             }
             return getAwsProxyResponse(command, 200);
         }
-        throw new RuntimeException("Not implemented");
+        throw new ResourceNotFoundException();
     }
 }

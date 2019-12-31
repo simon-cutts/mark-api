@@ -3,25 +3,23 @@ package com.sighware.mark.server.handler;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
+import com.sighware.mark.server.error.ResourceNotFoundException;
 import com.sighware.mark.server.query.EventQuery;
 import com.sighware.mark.server.util.DynamoDBAdapter;
 import com.sighware.mark.server.util.JsonUtil;
-import org.apache.log4j.Logger;
 
 import javax.ws.rs.HttpMethod;
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
 
-public class QueryEventHandler {
-    protected static final Logger log = Logger.getLogger(QueryEventHandler.class);
-
-    protected DynamoDBAdapter adapter;
+public class QueryEventHandler extends Handler {
 
     public QueryEventHandler(DynamoDBAdapter adapter) {
-        this.adapter = adapter;
+        super(adapter);
     }
 
-    public AwsProxyResponse handle(AwsProxyRequest request) {
+    @Override
+    public AwsProxyResponse handle(AwsProxyRequest request) throws ResourceNotFoundException {
 
         if (request.getHttpMethod().equals(HttpMethod.GET)) {
 
@@ -46,6 +44,6 @@ public class QueryEventHandler {
 
             return response;
         }
-        throw new RuntimeException("Not implemented");
+        throw new ResourceNotFoundException();
     }
 }

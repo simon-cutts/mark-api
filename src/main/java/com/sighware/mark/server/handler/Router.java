@@ -4,17 +4,18 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.services.lambda.runtime.Context;
 import com.amazonaws.services.lambda.runtime.RequestHandler;
+import com.sighware.mark.server.error.ResourceNotFoundException;
 import com.sighware.mark.server.util.DynamoDBAdapter;
 import org.apache.log4j.Logger;
 
 public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse> {
     public static final String PARENT_PATH = "/mark/v1";
-    public static final String LOCK_PATH = "/mark/v1/lock";
-    public static final String UNLOCK_PATH = "/mark/v1/unlock";
-    public static final String ENTITLEMENT_PATH = "/mark/v1/entitlement";
-    public static final String ENTITLEMENT_ADDRESS_PATH = "/mark/v1/entitlement/address";
-    public static final String REGISTRATION_NUMBER_PATH = "/mark/v1/registrationNumber/";
-    public static final String REGISTRATION_NUMBER_EVENT_PATH = "/mark/v1/event/registrationNumber/";
+    public static final String LOCK_PATH = PARENT_PATH + "/lock";
+    public static final String UNLOCK_PATH = PARENT_PATH + "/unlock";
+    public static final String ENTITLEMENT_PATH = PARENT_PATH + "/entitlement";
+    public static final String ENTITLEMENT_ADDRESS_PATH = PARENT_PATH + "/entitlement/address";
+    public static final String REGISTRATION_NUMBER_PATH = PARENT_PATH + "/registrationNumber/";
+    public static final String REGISTRATION_NUMBER_EVENT_PATH = PARENT_PATH + "/event/registrationNumber/";
 
     private static final Logger log = Logger.getLogger(Router.class);
     private static final DynamoDBAdapter DB_ADAPTER = DynamoDBAdapter.getInstance();
@@ -26,10 +27,10 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
             log.info(request.getPath());
 
             if (request.getPath().contains(REGISTRATION_NUMBER_PATH)) {
-                return new QueryHandler(DynamoDBAdapter.getInstance()).handle(request);
+                return new QueryOrDeleteHandler(DB_ADAPTER).handle(request);
 
             } else if (request.getPath().contains(REGISTRATION_NUMBER_EVENT_PATH)) {
-                return new QueryEventHandler(DynamoDBAdapter.getInstance()).handle(request);
+                return new QueryEventHandler(DB_ADAPTER).handle(request);
 
             } else {
 
@@ -47,13 +48,12 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
                     case UNLOCK_PATH:
                         return new UnLockHandler(DB_ADAPTER).handle(request);
 
-                    case PARENT_PATH:
-                        return new DeleteHandler(DB_ADAPTER).handle(request);
-
                     default:
                         return new AwsProxyResponse(404);
                 }
             }
+        } catch (ResourceNotFoundException ex) {
+            return new AwsProxyResponse(404);
         } catch (Exception ex) {
             log.error(ex.getMessage(), ex);
             return new AwsProxyResponse(500);

@@ -3,13 +3,13 @@ package com.sighware.mark.server.handler;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.command.Command;
+import com.sighware.mark.server.error.ResourceNotFoundException;
 import com.sighware.mark.server.model.Error;
 import com.sighware.mark.server.util.DynamoDBAdapter;
 import org.apache.log4j.Logger;
 
 import javax.ws.rs.core.HttpHeaders;
 import javax.ws.rs.core.MediaType;
-import java.io.IOException;
 
 import static com.sighware.mark.server.util.JsonUtil.toJson;
 
@@ -40,5 +40,5 @@ public abstract class Handler {
         return response;
     }
 
-    public abstract AwsProxyResponse handle(AwsProxyRequest request) throws IOException;
+    public abstract AwsProxyResponse handle(AwsProxyRequest request) throws ResourceNotFoundException;
 }

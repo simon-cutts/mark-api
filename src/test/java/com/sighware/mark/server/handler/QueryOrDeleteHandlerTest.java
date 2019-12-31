@@ -16,7 +16,7 @@ import javax.ws.rs.HttpMethod;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class QueryHandlerTest {
+class QueryOrDeleteHandlerTest {
 
     public static final DynamoDBAdapter DB_ADAPTER = DynamoDBAdapter.getInstance();
 
@@ -30,7 +30,6 @@ class QueryHandlerTest {
 
     @Test
     void testGet() {
-
         EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(TestHelper.buildRegistrationNumber()),
                 DB_ADAPTER.getDynamoDBMapper());
         RegistrationNumber reg = ec.persist();
@@ -40,15 +39,11 @@ class QueryHandlerTest {
         request.setPath(Router.REGISTRATION_NUMBER_PATH + reg.getMark());
 
         AwsProxyResponse response = new Router().handleRequest(request, null);
-
-
-        System.out.println(response.getBody());
         assertTrue(response.getBody().startsWith("{\"mark\""));
     }
 
     @Test
     void testBuyGet() {
-
         EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(TestHelper.buildRegistrationNumberSimple()),
                 DB_ADAPTER.getDynamoDBMapper());
         RegistrationNumber reg = ec.persist();
@@ -58,21 +53,17 @@ class QueryHandlerTest {
         request.setPath(Router.REGISTRATION_NUMBER_PATH + reg.getMark());
 
         AwsProxyResponse response = new Router().handleRequest(request, null);
-
         assertEquals(response.getStatusCode(), 200);
         assertTrue(response.getBody().endsWith("\"version\":1}"));
     }
 
     @Test
     void testGetFailNoMark() {
-
         AwsProxyRequest request = new AwsProxyRequest();
         request.setHttpMethod(HttpMethod.GET);
         request.setPath(Router.REGISTRATION_NUMBER_PATH);
 
         AwsProxyResponse response = new Router().handleRequest(request, null);
-
-        assertEquals(response.getStatusCode(), 204);
-        assertEquals("", response.getBody());
+        assertEquals(response.getStatusCode(), 404);
     }
 }

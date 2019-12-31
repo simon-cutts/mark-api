@@ -4,6 +4,7 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.command.Command;
 import com.sighware.mark.server.command.EntitlementCreateCommand;
+import com.sighware.mark.server.error.ResourceNotFoundException;
 import com.sighware.mark.server.event.EntitlementCreatedEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.model.RegistrationNumberDocument;
@@ -18,7 +19,8 @@ public class EntitlementHandler extends Handler {
         super(adapter);
     }
 
-    public AwsProxyResponse handle(AwsProxyRequest request) {
+    @Override
+    public AwsProxyResponse handle(AwsProxyRequest request) throws ResourceNotFoundException {
 
         if (request.getHttpMethod().equals(HttpMethod.POST)) {
             // Get the object from toJson
@@ -31,6 +33,6 @@ public class EntitlementHandler extends Handler {
             AwsProxyResponse response = getAwsProxyResponse(command, 201);
             return response;
         }
-        throw new RuntimeException("Not implemented");
+        throw new ResourceNotFoundException();
     }
 }
