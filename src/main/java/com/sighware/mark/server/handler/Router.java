@@ -10,8 +10,8 @@ import org.apache.log4j.Logger;
 public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse> {
     public static final String PARENT_PATH = "/mark/v1";
     public static final String SEED_PATH = PARENT_PATH + "/seed"; // for testing only
-    public static final String LOCK_PATH = PARENT_PATH + "/lock";
-    public static final String UNLOCK_PATH = PARENT_PATH + "/unlock";
+    public static final String LOCK_PATH = PARENT_PATH + "/lock/";
+    public static final String UNLOCK_PATH = PARENT_PATH + "/unlock/";
     public static final String ENTITLEMENT_PATH = PARENT_PATH + "/entitlement";
     public static final String ENTITLEMENT_ADDRESS_PATH = PARENT_PATH + "/entitlement/address";
     public static final String REGISTRATION_NUMBER_PATH = PARENT_PATH + "/registrationNumber/";
@@ -32,6 +32,12 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
             } else if (request.getPath().contains(REGISTRATION_NUMBER_EVENT_PATH)) {
                 return new QueryEventHandler(DB_ADAPTER).handle(request);
 
+            } else if (request.getPath().contains(LOCK_PATH)) {
+                return new LockHandler(DB_ADAPTER).handle(request);
+
+            } else if (request.getPath().contains(UNLOCK_PATH)) {
+                return new UnLockHandler(DB_ADAPTER).handle(request);
+
             } else {
 
                 switch (request.getPath()) {
@@ -45,11 +51,11 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
                     case ENTITLEMENT_ADDRESS_PATH:
                         return new AddressHandler(DB_ADAPTER).handle(request);
 
-                    case LOCK_PATH:
-                        return new LockHandler(DB_ADAPTER).handle(request);
-
-                    case UNLOCK_PATH:
-                        return new UnLockHandler(DB_ADAPTER).handle(request);
+//                    case LOCK_PATH:
+//                        return new LockHandler(DB_ADAPTER).handle(request);
+//
+//                    case UNLOCK_PATH:
+//                        return new UnLockHandler(DB_ADAPTER).handle(request);
 
                     default:
                         return new AwsProxyResponse(404);

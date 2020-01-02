@@ -16,7 +16,8 @@ import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.HttpMethod;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 class DeleteHandlerTest {
 
@@ -45,7 +46,7 @@ class DeleteHandlerTest {
         AwsProxyResponse response = new Router().handleRequest(request, null);
 
         assertEquals(response.getStatusCode(), 204);
-        assertTrue(response.getBody().equals(""));
+        assertNull(response.getBody());
 
         // Confirm the reg number and its events have gone
         RegistrationNumberQuery cc = new RegistrationNumberQuery(reg.getMark(), DB_ADAPTER.getDynamoDBMapper());

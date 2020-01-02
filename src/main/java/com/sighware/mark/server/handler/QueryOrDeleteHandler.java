@@ -6,6 +6,7 @@ import com.sighware.mark.server.command.Command;
 import com.sighware.mark.server.command.DeleteCommand;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
 import com.sighware.mark.server.event.DeleteEvent;
+import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.query.RegistrationNumberQuery;
 import com.sighware.mark.server.util.DynamoDBAdapter;
 import com.sighware.mark.server.util.JsonUtil;
@@ -23,9 +24,7 @@ public class QueryOrDeleteHandler extends Handler {
     @Override
     public AwsProxyResponse handle(AwsProxyRequest request) {
         // Get the mark from the path
-        int s = request.getPath().lastIndexOf("/");
-        int e = request.getPath().length();
-        String mark = request.getPath().substring(s + 1, e);
+        String mark = Path.getRegistrationNumber(request.getPath());
 
         AwsProxyResponse response = new AwsProxyResponse();
         response.addHeader(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON);
@@ -36,9 +35,14 @@ public class QueryOrDeleteHandler extends Handler {
 
             if (request.getHttpMethod().equals(HttpMethod.GET)) {
                 query = new RegistrationNumberQuery(mark, adapter.getDynamoDBMapper());
+                RegistrationNumber rn = query.get();
 
-                response.setStatusCode(200);
-                response.setBody(JsonUtil.toJson(query.get()));
+                if (rn != null) {
+                    response.setStatusCode(200);
+                    response.setBody(JsonUtil.toJson(rn));
+                } else {
+                    response.setStatusCode(404);
+                }
                 return response;
 
             } else if (request.getHttpMethod().equals(HttpMethod.DELETE)) {
@@ -49,13 +53,11 @@ public class QueryOrDeleteHandler extends Handler {
                         new DeleteEvent(query.get()), adapter.getDynamoDBMapper());
                 command.persist();
                 response.setStatusCode(204);
-                response.setBody("");
                 return response;
             }
 
         } catch (RegistrationNumberNotFoundException ex) {
-            response.setStatusCode(204);
-            response.setBody("");
+            response.setStatusCode(404);
             log.info("Unable to find mark " + mark);
         }
         return new AwsProxyResponse(404);

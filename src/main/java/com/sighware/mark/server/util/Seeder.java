@@ -41,7 +41,7 @@ public class Seeder {
         RegistrationNumber m = new RegistrationNumberDocument();
         m.setMark(randomString(10));
         m.setPrice(299.00);
-        m.setEventTime(Time.getTimestampNow());
+        m.setEventTime(Time.getTimestamp());
         m.setStatus(Status.MARK_AVAILABLE);
 
         return m;

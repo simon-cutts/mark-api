@@ -2,14 +2,15 @@ package com.sighware.mark.server.command;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
 import com.sighware.mark.server.error.LockFailedException;
-import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
 import com.sighware.mark.server.event.RegistrationNumberEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
-import com.sighware.mark.server.query.RegistrationNumberQuery;
+import com.sighware.mark.server.model.Status;
 import com.sighware.mark.server.util.Time;
 
+import java.time.ZonedDateTime;
+
 /**
- * Update command to handle the persistence of both the Event and its payload.
+ * Lock an available mark, with an expiration time of 10 minutes plus from now
  *
  * @author Simon Cutts
  */
@@ -18,16 +19,23 @@ public class LockCommand extends Command {
         super(event, mapper);
     }
 
-    public void process() throws RegistrationNumberNotFoundException, LockFailedException {
+    public void process() throws LockFailedException {
 
-        RegistrationNumberQuery query = new RegistrationNumberQuery(event.getMark(), mapper);
-        RegistrationNumber target = query.get();
+        RegistrationNumber target = event.getRegistrationNumber();
 
-        if (target.getLockTime() != null) {
+        if (!target.getStatus().equals(Status.MARK_AVAILABLE)) {
             throw new LockFailedException("RegistrationNumber " + target.getMark()
-                    + " cannot be set, has an existing lock time of " + target.getLockTime());
+                    + " is not available for sale");
         }
 
-        event.getRegistrationNumber().setLockTime(Time.getTimestampNow());
+        if (target.getLockTime() != null) {
+            ZonedDateTime expired = Time.toZonedDateTime(target.getLockTime());
+            if (expired.isAfter(Time.getZonedDateTime())) {
+                throw new LockFailedException("RegistrationNumber " + target.getMark()
+                        + " cannot be set, has an existing lock time of " + target.getLockTime());
+            }
+        }
+
+        event.getRegistrationNumber().setLockTime(Time.getTimestampPlus10Min());
     }
 }

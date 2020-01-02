@@ -3,11 +3,11 @@ package com.sighware.mark.server.handler;
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.command.UnLockCommand;
-import com.sighware.mark.server.event.LockEvent;
+import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
+import com.sighware.mark.server.event.UnLockEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
-import com.sighware.mark.server.model.RegistrationNumberDocument;
+import com.sighware.mark.server.query.RegistrationNumberQuery;
 import com.sighware.mark.server.util.DynamoDBAdapter;
-import com.sighware.mark.server.util.JsonUtil;
 
 import javax.ws.rs.HttpMethod;
 
@@ -20,16 +20,28 @@ public class UnLockHandler extends Handler {
     @Override
     public AwsProxyResponse handle(AwsProxyRequest request) {
 
-        if (request.getHttpMethod().equals(HttpMethod.POST)) {
+        if (request.getHttpMethod().equals(HttpMethod.PUT)) {
+
             // Get the object from json
-            RegistrationNumber registrationNumber = JsonUtil.toObject(request.getBody(), RegistrationNumberDocument.class);
+            String mark = Path.getRegistrationNumber(request.getPath());
+            try {
+                RegistrationNumberQuery query = new RegistrationNumberQuery(mark, adapter.getDynamoDBMapper());
+                RegistrationNumber registrationNumber = query.get();
 
-            // Create the command with the event
-            UnLockCommand command = new UnLockCommand(
-                    new LockEvent(registrationNumber), adapter.getDynamoDBMapper());
+                if (registrationNumber == null) throw new RegistrationNumberNotFoundException();
 
-            command.process();
-            return getAwsProxyResponse(command, 200);
+                // Create the command with the event
+                UnLockCommand command = new UnLockCommand(
+                        new UnLockEvent(registrationNumber), adapter.getDynamoDBMapper());
+                command.process();
+                return getAwsProxyResponse(command, 200);
+
+            } catch (RegistrationNumberNotFoundException e) {
+                response.setStatusCode(404);
+                log.info("Unable to find mark " + mark);
+
+            }
+            return response;
         }
         return new AwsProxyResponse(404);
     }

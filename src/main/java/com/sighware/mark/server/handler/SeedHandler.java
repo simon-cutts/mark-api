@@ -48,7 +48,7 @@ public class SeedHandler extends Handler {
                 response.setBody(JsonUtil.toJsonPretty(list));
                 return response;
             } catch (Exception e) {
-                throw new RuntimeException(e.getMessage(),e);
+                throw new RuntimeException(e.getMessage(), e);
             }
         }
         return new AwsProxyResponse(404);

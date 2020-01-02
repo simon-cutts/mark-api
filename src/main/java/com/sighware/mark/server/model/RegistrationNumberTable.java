@@ -30,7 +30,7 @@ public class RegistrationNumberTable implements RegistrationNumber {
 
     @Override
     @DynamoDBTypeConvertedEnum
-    @DynamoDBAttribute(attributeName="Status")
+    @DynamoDBAttribute(attributeName = "Status")
     public Status getStatus() {
         return status;
     }

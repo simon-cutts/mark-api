@@ -39,6 +39,7 @@ class QueryOrDeleteHandlerTest {
         request.setPath(Router.REGISTRATION_NUMBER_PATH + reg.getMark());
 
         AwsProxyResponse response = new Router().handleRequest(request, null);
+        assertEquals(200, response.getStatusCode());
         assertTrue(response.getBody().startsWith("{\"mark\""));
     }
 
@@ -53,7 +54,7 @@ class QueryOrDeleteHandlerTest {
         request.setPath(Router.REGISTRATION_NUMBER_PATH + reg.getMark());
 
         AwsProxyResponse response = new Router().handleRequest(request, null);
-        assertEquals(response.getStatusCode(), 200);
+        assertEquals(200, response.getStatusCode());
         assertTrue(response.getBody().endsWith("\"version\":1}"));
     }
 
@@ -64,6 +65,16 @@ class QueryOrDeleteHandlerTest {
         request.setPath(Router.REGISTRATION_NUMBER_PATH);
 
         AwsProxyResponse response = new Router().handleRequest(request, null);
-        assertEquals(response.getStatusCode(), 404);
+        assertEquals(404, response.getStatusCode());
+    }
+
+    @Test
+    void testMarkNotFound() {
+        AwsProxyRequest request = new AwsProxyRequest();
+        request.setHttpMethod(HttpMethod.GET);
+        request.setPath(Router.REGISTRATION_NUMBER_PATH + "NOT_EXIST");
+
+        AwsProxyResponse response = new Router().handleRequest(request, null);
+        assertEquals(404, response.getStatusCode());
     }
 }

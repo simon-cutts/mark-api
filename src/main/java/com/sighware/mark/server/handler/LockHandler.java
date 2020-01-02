@@ -8,9 +8,8 @@ import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
 import com.sighware.mark.server.event.LockEvent;
 import com.sighware.mark.server.model.Error;
 import com.sighware.mark.server.model.RegistrationNumber;
-import com.sighware.mark.server.model.RegistrationNumberDocument;
+import com.sighware.mark.server.query.RegistrationNumberQuery;
 import com.sighware.mark.server.util.DynamoDBAdapter;
-import com.sighware.mark.server.util.JsonUtil;
 
 import javax.ws.rs.HttpMethod;
 
@@ -25,22 +24,31 @@ public class LockHandler extends Handler {
     @Override
     public AwsProxyResponse handle(AwsProxyRequest request) {
 
-        if (request.getHttpMethod().equals(HttpMethod.POST)) {
+        if (request.getHttpMethod().equals(HttpMethod.PUT)) {
+
             // Get the object from json
-            RegistrationNumber registrationNumber = JsonUtil.toObject(request.getBody(), RegistrationNumberDocument.class);
-
-            // Create the command with the event
-            LockCommand command = new LockCommand(
-                    new LockEvent(registrationNumber), adapter.getDynamoDBMapper());
-
+            String mark = Path.getRegistrationNumber(request.getPath());
             try {
+                RegistrationNumberQuery query = new RegistrationNumberQuery(mark, adapter.getDynamoDBMapper());
+                RegistrationNumber registrationNumber = query.get();
+
+                if (registrationNumber == null) throw new RegistrationNumberNotFoundException();
+
+                // Create the command with the event
+                LockCommand command = new LockCommand(
+                        new LockEvent(registrationNumber), adapter.getDynamoDBMapper());
                 command.process();
-            } catch (RegistrationNumberNotFoundException | LockFailedException e) {
+                return getAwsProxyResponse(command, 200);
+
+            } catch (RegistrationNumberNotFoundException e) {
+                response.setStatusCode(404);
+                log.info("Unable to find mark " + mark);
+
+            } catch (LockFailedException e) {
                 response.setStatusCode(409);
                 response.setBody(toJson(new Error("409", "Conflict", e.getMessage())));
-                return response;
             }
-            return getAwsProxyResponse(command, 200);
+            return response;
         }
         return new AwsProxyResponse(404);
     }

@@ -21,7 +21,7 @@ public class AddressHandler extends Handler {
     @Override
     public AwsProxyResponse handle(AwsProxyRequest request) {
 
-        if (request.getHttpMethod().equals(HttpMethod.POST)) {
+        if (request.getHttpMethod().equals(HttpMethod.PUT)) {
             // Get the object from toJson
             RegistrationNumber registrationNumber = JsonUtil.toObject(request.getBody(), RegistrationNumberDocument.class);
 
