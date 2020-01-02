@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 import static com.sighware.mark.server.util.JsonUtil.toJson;
 import static com.sighware.mark.server.util.JsonUtil.toObject;
 
-class EntitlementCreatedEventTest {
+class EntitlementCreateEventTest {
 
     @Test
     void testJson() {
-        String json = toJson(new AddressUpdatedEvent(Seeder.buildRegistrationNumber()));
+        String json = toJson(new AddressUpdateEvent(Seeder.buildRegistrationNumber()));
         toObject(json, RegistrationNumberEvent.class);
         try {
             toObject(json, RegistrationNumberDocument.class);

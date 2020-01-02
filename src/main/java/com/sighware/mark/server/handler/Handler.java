@@ -14,6 +14,8 @@ import static com.sighware.mark.server.util.JsonUtil.toJson;
 
 /**
  * Parent Handler for managing interaction between HTTP and business logic
+ *
+ * @author Simon Cutts
  */
 public abstract class Handler {
     protected static final Logger log = Logger.getLogger(Handler.class);

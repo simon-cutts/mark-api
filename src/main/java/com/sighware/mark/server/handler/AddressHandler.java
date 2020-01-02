@@ -4,7 +4,7 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.command.Command;
 import com.sighware.mark.server.command.UpdateCommand;
-import com.sighware.mark.server.event.AddressUpdatedEvent;
+import com.sighware.mark.server.event.AddressUpdateEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.model.RegistrationNumberDocument;
 import com.sighware.mark.server.util.DynamoDBAdapter;
@@ -27,7 +27,7 @@ public class AddressHandler extends Handler {
 
             // Create the command with the event
             Command command = new UpdateCommand(
-                    new AddressUpdatedEvent(registrationNumber), adapter.getDynamoDBMapper());
+                    new AddressUpdateEvent(registrationNumber), adapter.getDynamoDBMapper());
 
             return getAwsProxyResponse(command, 200);
         }

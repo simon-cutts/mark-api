@@ -4,7 +4,7 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.command.EntitlementCreateCommand;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
-import com.sighware.mark.server.event.EntitlementCreatedEvent;
+import com.sighware.mark.server.event.EntitlementCreateEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.query.RegistrationNumberQuery;
 import com.sighware.mark.server.util.DynamoDBAdapter;
@@ -34,7 +34,7 @@ class LockHandlerTest {
     void unLockRegNum() throws RegistrationNumberNotFoundException {
 
         RegistrationNumber reg = Seeder.buildRegistrationNumberSimple();
-        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(reg),
+        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreateEvent(reg),
                 DB_ADAPTER.getDynamoDBMapper());
         reg = ec.persist();
         String mark = reg.getMark();
@@ -57,7 +57,7 @@ class LockHandlerTest {
 
         RegistrationNumber reg = Seeder.buildRegistrationNumberSimple();
         reg.setLockTime(Time.getTimestamp(Time.getZonedDateTime().minusMinutes(11)));
-        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(reg),
+        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreateEvent(reg),
                 DB_ADAPTER.getDynamoDBMapper());
 
         // Set lock time as expired 11 minutes ago
@@ -81,7 +81,7 @@ class LockHandlerTest {
     void unLockRegNumFailMarkNotAvailable() {
 
         RegistrationNumber reg = Seeder.buildRegistrationNumber();
-        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(reg),
+        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreateEvent(reg),
                 DB_ADAPTER.getDynamoDBMapper());
         reg = ec.persist();
         String mark = reg.getMark();
@@ -100,7 +100,7 @@ class LockHandlerTest {
 
         RegistrationNumber reg = Seeder.buildRegistrationNumberSimple();
         reg.setLockTime(Time.getTimestampPlus10Min());
-        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(reg),
+        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreateEvent(reg),
                 DB_ADAPTER.getDynamoDBMapper());
         reg = ec.persist();
         String mark = reg.getMark();
@@ -119,7 +119,7 @@ class LockHandlerTest {
     }
 
     @Test
-    void lockedRegNumFailMarkNotExist() throws RegistrationNumberNotFoundException {
+    void lockedRegNumFailMarkNotExist() {
 
         AwsProxyRequest request = new AwsProxyRequest();
         request.setHttpMethod(HttpMethod.PUT);

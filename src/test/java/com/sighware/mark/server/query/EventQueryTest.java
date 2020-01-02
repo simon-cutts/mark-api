@@ -4,8 +4,8 @@ import com.sighware.mark.server.command.Command;
 import com.sighware.mark.server.command.EntitlementCreateCommand;
 import com.sighware.mark.server.command.UpdateCommand;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
-import com.sighware.mark.server.event.AddressUpdatedEvent;
-import com.sighware.mark.server.event.EntitlementCreatedEvent;
+import com.sighware.mark.server.event.AddressUpdateEvent;
+import com.sighware.mark.server.event.EntitlementCreateEvent;
 import com.sighware.mark.server.event.RegistrationNumberEvent;
 import com.sighware.mark.server.event.RegistrationNumberEvents;
 import com.sighware.mark.server.model.RegistrationNumber;
@@ -26,7 +26,7 @@ class EventQueryTest {
 
         RegistrationNumber regNum = Seeder.buildRegistrationNumber();
 
-        RegistrationNumberEvent event = new EntitlementCreatedEvent(regNum);
+        RegistrationNumberEvent event = new EntitlementCreateEvent(regNum);
         Command ec = new EntitlementCreateCommand(event,
                 DB_ADAPTER.getDynamoDBMapper());
         regNum = ec.persist();
@@ -41,10 +41,10 @@ class EventQueryTest {
         // Capture change address
         String address2 = "5 Your Street";
         regNum.getEntitlement().getAddress().setAddLine1(address2);
-        event = new AddressUpdatedEvent(regNum);
+        event = new AddressUpdateEvent(regNum);
         ec = new UpdateCommand(event,
                 DB_ADAPTER.getDynamoDBMapper());
-        regNum = ec.persist();
+        ec.persist();
 
         ZonedDateTime time2 = ZonedDateTime.parse(event.getCreateTime());
 

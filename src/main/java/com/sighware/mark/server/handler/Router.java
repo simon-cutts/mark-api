@@ -14,6 +14,7 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
     public static final String UNLOCK_PATH = PARENT_PATH + "/unlock/";
     public static final String ENTITLEMENT_PATH = PARENT_PATH + "/entitlement";
     public static final String ENTITLEMENT_ADDRESS_PATH = PARENT_PATH + "/entitlement/address";
+    public static final String ENTITLEMENT_NOMINEE_PATH = PARENT_PATH + "/entitlement/nominee";
     public static final String REGISTRATION_NUMBER_PATH = PARENT_PATH + "/registrationNumber/";
     public static final String REGISTRATION_NUMBER_EVENT_PATH = PARENT_PATH + "/event/registrationNumber/";
 
@@ -51,11 +52,8 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
                     case ENTITLEMENT_ADDRESS_PATH:
                         return new AddressHandler(DB_ADAPTER).handle(request);
 
-//                    case LOCK_PATH:
-//                        return new LockHandler(DB_ADAPTER).handle(request);
-//
-//                    case UNLOCK_PATH:
-//                        return new UnLockHandler(DB_ADAPTER).handle(request);
+                    case ENTITLEMENT_NOMINEE_PATH:
+                        return new NomineeHandler(DB_ADAPTER).handle(request);
 
                     default:
                         return new AwsProxyResponse(404);

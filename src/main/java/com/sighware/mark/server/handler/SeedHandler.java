@@ -5,7 +5,7 @@ import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
 import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
 import com.sighware.mark.server.command.EntitlementCreateCommand;
-import com.sighware.mark.server.event.EntitlementCreatedEvent;
+import com.sighware.mark.server.event.EntitlementCreateEvent;
 import com.sighware.mark.server.model.RegistrationNumberTable;
 import com.sighware.mark.server.util.DynamoDBAdapter;
 import com.sighware.mark.server.util.JsonUtil;
@@ -29,7 +29,7 @@ public class SeedHandler extends Handler {
 
             for (int i = 0; i <= 50; i++) {
                 EntitlementCreateCommand ec = new EntitlementCreateCommand(
-                        new EntitlementCreatedEvent(Seeder.buildRegistrationNumberSimple()),
+                        new EntitlementCreateEvent(Seeder.buildRegistrationNumberSimple()),
                         adapter.getDynamoDBMapper());
                 ec.persist();
             }

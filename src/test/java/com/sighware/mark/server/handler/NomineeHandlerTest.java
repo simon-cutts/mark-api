@@ -2,28 +2,34 @@ package com.sighware.mark.server.handler;
 
 import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sighware.mark.server.command.EntitlementCreateCommand;
-import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
 import com.sighware.mark.server.event.EntitlementCreateEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
-import com.sighware.mark.server.query.RegistrationNumberQuery;
 import com.sighware.mark.server.util.DynamoDBAdapter;
 import com.sighware.mark.server.util.Seeder;
-import com.sighware.mark.server.util.Time;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import javax.ws.rs.HttpMethod;
+import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-class UnLockHandlerTest {
+class NomineeHandlerTest {
 
     static DynamoDBAdapter DB_ADAPTER = DynamoDBAdapter.getInstance();
 
+    RegistrationNumber reg;
+    AwsProxyRequest request;
+
     @BeforeEach
     void setUp() {
+        reg = Seeder.buildRegistrationNumber();
+        request = new AwsProxyRequest();
+        request.setPath(Router.ENTITLEMENT_NOMINEE_PATH);
     }
 
     @AfterEach
@@ -31,25 +37,18 @@ class UnLockHandlerTest {
     }
 
     @Test
-    void unLockRegNum() throws RegistrationNumberNotFoundException {
+    void changeNominee() throws IOException {
 
-        RegistrationNumber reg = Seeder.buildRegistrationNumberSimple();
-        reg.setLockTime(Time.getTimestamp(Time.getZonedDateTime().minusMinutes(5)));
         EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreateEvent(reg),
                 DB_ADAPTER.getDynamoDBMapper());
         reg = ec.persist();
-        String mark = reg.getMark();
 
-        AwsProxyRequest request = new AwsProxyRequest();
+        reg.getEntitlement().setNomineeName("Alice in Wonder");
         request.setHttpMethod(HttpMethod.PUT);
-        request.setPath(Router.UNLOCK_PATH + mark);
+        request.setBody(new ObjectMapper().writeValueAsString(reg));
 
         AwsProxyResponse response = new Router().handleRequest(request, null);
         assertEquals(response.getStatusCode(), 200);
-        assertTrue(response.getBody().startsWith("{\"mark\":"));
-
-        RegistrationNumberQuery query = new RegistrationNumberQuery(reg.getMark(), DB_ADAPTER.getDynamoDBMapper());
-        reg = query.get();
-        assertNull(reg.getLockTime());
+        assertTrue(response.getBody().contains(reg.getEntitlement().getNomineeName()));
     }
 }

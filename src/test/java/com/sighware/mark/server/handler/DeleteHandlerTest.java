@@ -4,7 +4,7 @@ import com.amazonaws.serverless.proxy.model.AwsProxyRequest;
 import com.amazonaws.serverless.proxy.model.AwsProxyResponse;
 import com.sighware.mark.server.command.EntitlementCreateCommand;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
-import com.sighware.mark.server.event.EntitlementCreatedEvent;
+import com.sighware.mark.server.event.EntitlementCreateEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.query.EventQuery;
 import com.sighware.mark.server.query.RegistrationNumberQuery;
@@ -23,8 +23,16 @@ class DeleteHandlerTest {
 
     public static final DynamoDBAdapter DB_ADAPTER = DynamoDBAdapter.getInstance();
 
+    EntitlementCreateCommand ec;
+    RegistrationNumber reg;
+    String mark;
+
     @BeforeEach
     void setUp() {
+        ec = new EntitlementCreateCommand(new EntitlementCreateEvent(Seeder.buildRegistrationNumber()),
+                DB_ADAPTER.getDynamoDBMapper());
+        RegistrationNumber reg = ec.persist();
+        mark = reg.getMark();
     }
 
     @AfterEach
@@ -33,12 +41,6 @@ class DeleteHandlerTest {
 
     @Test
     void testDelete() throws RegistrationNumberNotFoundException {
-
-        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(Seeder.buildRegistrationNumber()),
-                DB_ADAPTER.getDynamoDBMapper());
-        RegistrationNumber reg = ec.persist();
-        String mark = reg.getMark();
-
         AwsProxyRequest request = new AwsProxyRequest();
         request.setHttpMethod(HttpMethod.DELETE);
         request.setPath(Router.REGISTRATION_NUMBER_PATH + "/" + mark);
@@ -58,12 +60,6 @@ class DeleteHandlerTest {
 
     @Test
     void testGetFailNoMark() {
-
-        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(Seeder.buildRegistrationNumber()),
-                DB_ADAPTER.getDynamoDBMapper());
-        RegistrationNumber reg = ec.persist();
-        String mark = reg.getMark();
-
         AwsProxyRequest request = new AwsProxyRequest();
         request.setHttpMethod(HttpMethod.POST);
         request.setPath(Router.REGISTRATION_NUMBER_PATH + "/" + mark);

@@ -1,7 +1,7 @@
 package com.sighware.mark.server.command;
 
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
-import com.sighware.mark.server.event.EntitlementCreatedEvent;
+import com.sighware.mark.server.event.EntitlementCreateEvent;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.query.RegistrationNumberQuery;
 import com.sighware.mark.server.util.DynamoDBAdapter;
@@ -25,7 +25,7 @@ class EntitlementCreateCommandTest {
     public void persist() throws RegistrationNumberNotFoundException {
 
         RegistrationNumber rn = Seeder.buildRegistrationNumber();
-        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreatedEvent(rn),
+        EntitlementCreateCommand ec = new EntitlementCreateCommand(new EntitlementCreateEvent(rn),
                 DynamoDBAdapter.getInstance().getDynamoDBMapper());
         ec.persist();
 
