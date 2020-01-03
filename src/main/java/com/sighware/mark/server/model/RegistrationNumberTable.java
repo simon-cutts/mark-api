@@ -5,6 +5,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 
 /**
  * Allows a RegistrationNumber to be persisted directly in the RegistrationNumber table
+ *
+ * @author Simon Cutts
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @DynamoDBTable(tableName = "RegistrationNumber")

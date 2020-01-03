@@ -7,5 +7,4 @@ public class EntitlementExtendEvent extends RegistrationNumberEvent {
     public EntitlementExtendEvent(RegistrationNumber registrationNumber) {
         super(registrationNumber);
     }
-
 }

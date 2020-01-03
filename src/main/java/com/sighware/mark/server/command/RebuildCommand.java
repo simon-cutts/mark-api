@@ -23,10 +23,7 @@ import java.util.List;
  * @author Simon Cutts
  */
 public class RebuildCommand {
-
     private static final Logger LOG = Logger.getLogger(RebuildCommand.class);
-
-    private static final String startTime = "1900-01-01T00:00:01.000Z";
 
     private final DynamoDBMapper mapper;
     private final String mark;

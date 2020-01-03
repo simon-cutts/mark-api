@@ -7,5 +7,4 @@ public class NomineeUpdateEvent extends RegistrationNumberEvent {
     public NomineeUpdateEvent(RegistrationNumber registrationNumber) {
         super(registrationNumber);
     }
-
 }

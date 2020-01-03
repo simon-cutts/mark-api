@@ -15,6 +15,7 @@ import java.time.ZonedDateTime;
  * @author Simon Cutts
  */
 public class LockCommand extends Command {
+
     public LockCommand(RegistrationNumberEvent event, DynamoDBMapper mapper) {
         super(event, mapper);
     }

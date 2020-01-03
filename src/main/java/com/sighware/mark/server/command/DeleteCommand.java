@@ -17,6 +17,7 @@ import java.util.List;
  * @author Simon Cutts
  */
 public class DeleteCommand extends Command {
+
     public DeleteCommand(RegistrationNumberEvent event, DynamoDBMapper mapper) {
         super(event, mapper);
     }

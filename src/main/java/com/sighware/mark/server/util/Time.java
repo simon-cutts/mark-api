@@ -6,8 +6,7 @@ import java.time.format.DateTimeFormatter;
 
 public class Time {
 
-    private Time() {
-    }
+    private Time() { }
 
     public static ZonedDateTime getZonedDateTime() {
         return ZonedDateTime.now(ZoneOffset.UTC);

@@ -9,6 +9,7 @@ import com.sighware.mark.server.event.RegistrationNumberEvent;
  * @author Simon Cutts
  */
 public class EntitlementCreateCommand extends Command {
+
     public EntitlementCreateCommand(RegistrationNumberEvent event, DynamoDBMapper mapper) {
         super(event, mapper);
     }

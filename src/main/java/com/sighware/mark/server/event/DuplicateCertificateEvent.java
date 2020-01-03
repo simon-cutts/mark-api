@@ -7,5 +7,4 @@ public class DuplicateCertificateEvent extends RegistrationNumberEvent {
     public DuplicateCertificateEvent(RegistrationNumber registrationNumber) {
         super(registrationNumber);
     }
-
 }

@@ -3,6 +3,12 @@ package com.sighware.mark.server.model;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
+/**
+ * Allows a Entitlement to be persisted as a json document in the RegistrationNumber table, wrapped
+ * within a RegistrationNumber
+ *
+ * @author Simon Cutts
+ */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @DynamoDBDocument
 public class Entitlement {

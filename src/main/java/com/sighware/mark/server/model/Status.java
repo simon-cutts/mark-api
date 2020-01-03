@@ -1,5 +1,10 @@
 package com.sighware.mark.server.model;
 
+/**
+ * All the various statuses applicable to a RegistrationNumber
+ *
+ * @author Simon Cutts
+ */
 public enum Status {
     MARK_AVAILABLE,
     MARK_PENDING_PAYMENT_BY_CHEQUE,
@@ -16,8 +21,8 @@ public enum Status {
     DEALER_STOPPED,
     OFFENSIVE,
     CHEQUE_BANKED_NOT_YET_CLEARED,
-    CERTIFICATE_ISSUED_PAYMENT_NOT_YEY_RECEIVED,
-    MARK_ASSIGNED_PAYMENT_NOT_YEY_RECEIVED,
+    CERTIFICATE_ISSUED_PAYMENT_NOT_YET_RECEIVED,
+    MARK_ASSIGNED_PAYMENT_NOT_YET_RECEIVED,
     MARK_STOPPED_CHEQUE_RETURNED,
     MARK_RESERVED_CHEQUE_OVERDUE,
     RD_CHEQUE_AFTER_V750_ISSUED

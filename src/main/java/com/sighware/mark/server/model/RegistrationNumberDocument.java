@@ -4,10 +4,13 @@ import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBAttribute;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBDocument;
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBTypeConvertedEnum;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Allows a RegistrationNumber to be persisted as a json document in the RegistrationNumberEvent table, wrapped
  * within an event
+ *
+ * @author Simon Cutts
  */
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @DynamoDBDocument
@@ -33,6 +36,7 @@ public class RegistrationNumberDocument implements RegistrationNumber {
     @Override
     @DynamoDBTypeConvertedEnum
     @DynamoDBAttribute(attributeName = "Status")
+//    @JsonProperty("status")
     public Status getStatus() {
         return status;
     }

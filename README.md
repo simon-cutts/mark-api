@@ -16,7 +16,7 @@ The application perhaps deviates from a pure event sourcing pattern in these are
 2. The app supports transactional concurrency, with an optimistic locking strategy
 2. Allows deletes, so in accordance with [GDPR](https://gdpr-info.eu/art-17-gdpr/), marks can be forgotten
 
-### System of Record
+## System of Record
 
 The `RegistrationNumberEvent` table stores every single event that is submitted to the system. This is the immutable system of record for the application.
 
@@ -132,12 +132,22 @@ At any time, you may delete the stack
 $ aws cloudformation delete-stack --stack-name <YOUR STACK NAME>
 ```
 
-Create a mark type the following. This will only work once. To send another POST, change the value of "mark:"
+## Run
+For an example of the REST operations supported by mark-api, please import the file `mark-api.postman_collection.json` into [Postman](https://www.getpostman.com/). But here a a couple of those GET operations to run in a browser
+
+List all marks:
 
 ```
-$ curl -H "Content-Type: application/json" -X POST https://koxwmaauoh.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement -d '
+$ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1
+
+```
+Purchase a mark. This will only work once. To send another POST, change the value of "mark:"
+
+```
+$ curl -H "Content-Type: application/json" -X POST https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement -d '
   {
-    "mark": "AFC F5",
+    "mark": "AFCF5",
+    "status": "MARK_ASSIGNED",
     "eventTime": "2019-11-29T09:26:43.837Z",
     "price": 299,
     "entitlement": {
@@ -153,5 +163,23 @@ $ curl -H "Content-Type: application/json" -X POST https://koxwmaauoh.execute-ap
       }
     }
   }'
+
+```
+Delete a mark. 
+
+```
+$ curl -X DELETE https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/registrationNumber/AFC0090
+
+```
+Get events for a mark:
+
+```
+$ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1
+
+```
+Get mark/entitlement details:
+
+```
+$ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/registrationNumber/AFC0090
 
 ```

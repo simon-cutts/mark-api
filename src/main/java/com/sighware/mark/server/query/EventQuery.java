@@ -21,7 +21,6 @@ import java.util.Map;
  * @author Simon Cutts
  */
 public class EventQuery {
-
     private static final Logger LOG = Logger.getLogger(EventQuery.class);
 
     private final ZonedDateTime startTime = ZonedDateTime.parse("1900-01-01T00:00:01.000Z");

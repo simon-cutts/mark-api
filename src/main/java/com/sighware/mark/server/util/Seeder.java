@@ -11,8 +11,7 @@ import java.util.Random;
  */
 public class Seeder {
 
-    private Seeder() {
-    }
+    private Seeder() { }
 
     public static RegistrationNumber buildRegistrationNumber() {
 

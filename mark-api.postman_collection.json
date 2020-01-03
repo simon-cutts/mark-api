@@ -1,0 +1,436 @@
+{
+	"info": {
+		"_postman_id": "f5309937-e172-4185-95db-b3ca36d7a5e5",
+		"name": "mark-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "List all marks",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1",
+					"protocol": "https",
+					"host": [
+						"npxwh3sztl",
+						"execute-api",
+						"eu-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"mark",
+						"v1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Purchase mark",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"mark\": \"AFC0090\",\n    \"status\": \"MARK_ASSIGNED\",\n    \"eventTime\": \"2019-11-29T09:26:43.837Z\",\n    \"price\": 299,\n    \"entitlement\": {\n        \"certificateNo\": \"EV56RP259VQP8G423H65\",\n        \"nomineeName\": \"Mr John Jones\",\n        \"agreementTime\": \"2020-01-03T11:43:41.118Z\",\n        \"certificateTime\": \"2022-11-29T09:26:43.786Z\",\n        \"purchaserName\": \"Felicity Jones\",\n        \"address\": {\n            \"addLine1\": \"2 My Street\",\n            \"addLine2\": \"Redwood\",\n            \"postTown\": \"Swansea\",\n            \"postcode\": \"SW1 4RT\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement",
+					"protocol": "https",
+					"host": [
+						"npxwh3sztl",
+						"execute-api",
+						"eu-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"mark",
+						"v1",
+						"entitlement"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get events for a mark",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/event/registrationNumber/AFC0090",
+					"protocol": "https",
+					"host": [
+						"npxwh3sztl",
+						"execute-api",
+						"eu-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"mark",
+						"v1",
+						"event",
+						"registrationNumber",
+						"AFC0090"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get mark/entitlement details",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/registrationNumber/AFC0090",
+					"protocol": "https",
+					"host": [
+						"npxwh3sztl",
+						"execute-api",
+						"eu-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"mark",
+						"v1",
+						"registrationNumber",
+						"AFC0090"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Extend entitlement",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"mark\": \"AFC0090\",\n    \"status\": \"MARK_ASSIGNED\",\n    \"eventTime\": \"2020-01-02T14:50:43.768Z\",\n    \"price\": 299.0,\n    \"version\": 1,\n    \"entitlement\": {\n        \"certificateNo\": \"EV56RP259VQP8G423H65\",\n        \"nomineeName\": \"Mr John Jones\",\n        \"agreementTime\": \"2020-01-03T11:43:41.118Z\",\n        \"certificateTime\": \"2029-11-29T09:26:43.786Z\",\n        \"purchaserName\": \"Felicity Jones\",\n        \"address\": {\n            \"addLine1\": \"2 My Street\",\n            \"addLine2\": \"Redwood\",\n            \"postTown\": \"Swansea\",\n            \"postcode\": \"SW1 4RT\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement",
+					"protocol": "https",
+					"host": [
+						"npxwh3sztl",
+						"execute-api",
+						"eu-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"mark",
+						"v1",
+						"entitlement"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Change entitlement address",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"mark\": \"AFC0090\",\n    \"status\": \"MARK_ASSIGNED\",\n    \"eventTime\": \"2020-01-02T15:14:10.788Z\",\n    \"price\": 299.0,\n    \"version\": 2,\n    \"entitlement\": {\n        \"certificateNo\": \"EV56RP259VQP8G423H65\",\n        \"nomineeName\": \"Mr John Jones\",\n        \"agreementTime\": \"2020-01-03T11:43:41.118Z\",\n        \"certificateTime\": \"2029-11-29T09:26:43.786Z\",\n        \"purchaserName\": \"Felicity Jones\",\n        \"address\": {\n            \"addLine1\": \"100 Our Road\",\n            \"addLine2\": \"Blaze\",\n            \"postTown\": \"Cardiff\",\n            \"postcode\": \"CF1 4FT\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement/address",
+					"protocol": "https",
+					"host": [
+						"npxwh3sztl",
+						"execute-api",
+						"eu-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"mark",
+						"v1",
+						"entitlement",
+						"address"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update nominee details",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"mark\": \"AFC0090\",\n    \"status\": \"MARK_ASSIGNED\",\n    \"eventTime\": \"2020-01-02T14:50:43.768Z\",\n    \"price\": 299.0,\n    \"version\": 3,\n    \"entitlement\": {\n        \"certificateNo\": \"EV56RP259VQP8G423H65\",\n        \"nomineeName\": \"Mrs Clare Jones\",\n        \"agreementTime\": \"2020-01-03T11:43:41.118Z\",\n        \"certificateTime\": \"2029-11-29T09:26:43.786Z\",\n        \"purchaserName\": \"Felicity Jones\",\n        \"address\": {\n            \"addLine1\": \"100 Our Road\",\n            \"addLine2\": \"Blaze\",\n            \"postTown\": \"Cardiff\",\n            \"postcode\": \"CF1 QWT\"\n        }\n    }\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement/nominee",
+					"protocol": "https",
+					"host": [
+						"npxwh3sztl",
+						"execute-api",
+						"eu-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"mark",
+						"v1",
+						"entitlement",
+						"nominee"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete a mark (not used really)",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/registrationNumber/AFC0090",
+					"protocol": "https",
+					"host": [
+						"npxwh3sztl",
+						"execute-api",
+						"eu-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"mark",
+						"v1",
+						"registrationNumber",
+						"AFC0090"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Lock mark",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/lock/PFVYRFZ1SU",
+					"protocol": "https",
+					"host": [
+						"npxwh3sztl",
+						"execute-api",
+						"eu-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"mark",
+						"v1",
+						"lock",
+						"PFVYRFZ1SU"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Unlock mark",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/unlock/PFVYRFZ1SU",
+					"protocol": "https",
+					"host": [
+						"npxwh3sztl",
+						"execute-api",
+						"eu-west-2",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"Prod",
+						"mark",
+						"v1",
+						"unlock",
+						"PFVYRFZ1SU"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}
