@@ -43,7 +43,6 @@ public abstract class Command {
         writeRequest.addPut(event);
         mapper.transactionWrite(writeRequest);
 
-        // TODO: Should get the object from the DB?
         return event.getRegistrationNumber();
     }
 }

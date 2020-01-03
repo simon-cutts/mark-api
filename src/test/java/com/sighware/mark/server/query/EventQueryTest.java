@@ -52,14 +52,14 @@ class EventQueryTest {
         EventQuery eq = new EventQuery(DB_ADAPTER.getDynamoDBMapper(), time1, mark);
         RegistrationNumberEvents list = eq.get();
         assertEquals(1, list.getEvents().size());
-        assertEquals("EntitlementCreatedEvent", list.getEvents().get(0).getEventName());
+        assertEquals("EntitlementCreateEvent", list.getEvents().get(0).getEventName());
 
         // Test both events for latest time
         eq = new EventQuery(DB_ADAPTER.getDynamoDBMapper(), mark);
         list = eq.get();
         assertEquals(2, list.getEvents().size());
-        assertEquals("EntitlementCreatedEvent", list.getEvents().get(0).getEventName());
-        assertEquals("AddressUpdatedEvent", list.getEvents().get(1).getEventName());
+        assertEquals("EntitlementCreateEvent", list.getEvents().get(0).getEventName());
+        assertEquals("AddressUpdateEvent", list.getEvents().get(1).getEventName());
     }
 
 }

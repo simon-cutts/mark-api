@@ -14,6 +14,7 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
     public static final String UNLOCK_PATH = PARENT_PATH + "/unlock/";
     public static final String ENTITLEMENT_PATH = PARENT_PATH + "/entitlement";
     public static final String ENTITLEMENT_ADDRESS_PATH = PARENT_PATH + "/entitlement/address";
+    public static final String ENTITLEMENT_CERTIFICATE_PATH = PARENT_PATH + "/entitlement/certificate/";
     public static final String ENTITLEMENT_NOMINEE_PATH = PARENT_PATH + "/entitlement/nominee";
     public static final String REGISTRATION_NUMBER_PATH = PARENT_PATH + "/registrationNumber/";
     public static final String REGISTRATION_NUMBER_EVENT_PATH = PARENT_PATH + "/event/registrationNumber/";
@@ -39,12 +40,15 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
             } else if (request.getPath().contains(UNLOCK_PATH)) {
                 return new UnLockHandler(DB_ADAPTER).handle(request);
 
+            } else if (request.getPath().contains(ENTITLEMENT_CERTIFICATE_PATH)) {
+                return new CertificateHandler(DB_ADAPTER).handle(request);
+
             } else {
 
                 switch (request.getPath()) {
 
-                    case SEED_PATH:
-                        return new SeedHandler(DB_ADAPTER).handle(request);
+                    case PARENT_PATH:
+                        return new ListHandler(DB_ADAPTER).handle(request);
 
                     case ENTITLEMENT_PATH:
                         return new EntitlementHandler(DB_ADAPTER).handle(request);
@@ -54,6 +58,9 @@ public class Router implements RequestHandler<AwsProxyRequest, AwsProxyResponse>
 
                     case ENTITLEMENT_NOMINEE_PATH:
                         return new NomineeHandler(DB_ADAPTER).handle(request);
+
+                    case SEED_PATH:
+                        return new SeedHandler(DB_ADAPTER).handle(request);
 
                     default:
                         return new AwsProxyResponse(404);

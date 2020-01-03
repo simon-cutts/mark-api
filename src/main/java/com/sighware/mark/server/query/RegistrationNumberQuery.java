@@ -1,6 +1,8 @@
 package com.sighware.mark.server.query;
 
 import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBMapper;
+import com.amazonaws.services.dynamodbv2.datamodeling.DynamoDBScanExpression;
+import com.amazonaws.services.dynamodbv2.datamodeling.PaginatedScanList;
 import com.sighware.mark.server.error.RegistrationNumberNotFoundException;
 import com.sighware.mark.server.model.RegistrationNumber;
 import com.sighware.mark.server.model.RegistrationNumberTable;
@@ -30,6 +32,14 @@ public class RegistrationNumberQuery {
             return mapper.load(RegistrationNumberTable.class, mark);
         } catch (Exception e) {
             throw new RegistrationNumberNotFoundException("Unable to find registration number " + mark, e);
+        }
+    }
+
+    public PaginatedScanList <RegistrationNumberTable> list() throws RegistrationNumberNotFoundException {
+        try {
+            return mapper.scan(RegistrationNumberTable.class, new DynamoDBScanExpression());
+        } catch (Exception e) {
+            throw new RegistrationNumberNotFoundException(e.getMessage(), e);
         }
     }
 }

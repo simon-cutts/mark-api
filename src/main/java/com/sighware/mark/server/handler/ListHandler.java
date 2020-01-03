@@ -16,28 +16,27 @@ import javax.ws.rs.HttpMethod;
 /**
  * Seed handler for creating test data
  */
-public class SeedHandler extends Handler {
+public class ListHandler extends Handler {
 
-    public SeedHandler(DynamoDBAdapter adapter) {
+    public ListHandler(DynamoDBAdapter adapter) {
         super(adapter);
     }
 
     @Override
     public AwsProxyResponse handle(AwsProxyRequest request) {
 
-        if (request.getHttpMethod().equals(HttpMethod.POST)) {
+        if (request.getHttpMethod().equals(HttpMethod.GET)) {
 
-            for (int i = 0; i <= 50; i++) {
-                EntitlementCreateCommand ec = new EntitlementCreateCommand(
-                        new EntitlementCreateEvent(Seeder.buildRegistrationNumberSimple()),
-                        adapter.getDynamoDBMapper());
-                ec.persist();
+            try {
+                PaginatedScanList<RegistrationNumberTable> list =
+                        adapter.getDynamoDBMapper().scan(RegistrationNumberTable.class, new DynamoDBScanExpression());
+                AwsProxyResponse response = new AwsProxyResponse();
+                response.setStatusCode(200);
+                response.setBody(JsonUtil.toJson(list));
+                return response;
+            } catch (Exception e) {
+                throw new RuntimeException(e.getMessage(), e);
             }
-
-            AwsProxyResponse response = new AwsProxyResponse();
-            response.setStatusCode(201);
-            return response;
-
         }
         return new AwsProxyResponse(404);
     }

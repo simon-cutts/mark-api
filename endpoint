@@ -31,6 +31,6 @@ time curl -H "Content-Type: application/json" -X POST https://npxwh3sztl.execute
   }
 }'
 
-curl https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/registrationNumber/AFC0088
+curl https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/registrationNumber/AFC0089
 
-curl https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/event/registrationNumber/AFC0088
+curl https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/event/registrationNumber/AFC0089

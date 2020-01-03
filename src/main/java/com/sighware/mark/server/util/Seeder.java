@@ -23,7 +23,8 @@ public class Seeder {
         ent.setNomineeName("Mr John Jones");
         ent.setPurchaserName("Felicity Jones");
         ent.setCertificateNo(randomString(15));
-        ent.setCertificateTime(m.getEventTime());
+        ent.setCertificateTime(Time.getTimestamp(Time.getZonedDateTime().plusYears(10)));
+        ent.setAgreementTime(Time.getTimestamp());
 
         Address add = new Address();
         add.setAddLine1("2 My Street");
