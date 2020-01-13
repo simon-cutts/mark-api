@@ -146,7 +146,7 @@ Purchase a mark. This will only work once. To send another POST, change the valu
 ```
 $ curl -H "Content-Type: application/json" -X POST https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement -d '
   {
-    "mark": "AFCF5",
+    "mark": "AFCF0090",
     "status": "MARK_ASSIGNED",
     "eventTime": "2019-11-29T09:26:43.837Z",
     "price": 299,
@@ -165,21 +165,29 @@ $ curl -H "Content-Type: application/json" -X POST https://xxxxxxxxxx.execute-ap
   }'
 
 ```
+Get all events for a mark:
+
+```
+$ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/event/registrationNumber/AFC0090
+
+```
+
 Delete a mark. 
 
 ```
 $ curl -X DELETE https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/registrationNumber/AFC0090
 
 ```
-Get events for a mark:
-
-```
-$ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1
-
-```
 Get mark/entitlement details:
 
 ```
 $ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/registrationNumber/AFC0090
+
+```
+
+List all marks mark:
+
+```
+$ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1
 
 ```
