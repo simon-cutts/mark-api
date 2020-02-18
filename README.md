@@ -48,18 +48,101 @@ Events traverse the event stream to notify downstream clients. The event stream 
 4. The `Lambda Fan out` lambda within mark-event-queue distributes the message events from `SQS FIFO Fanout` queue to all interested `SQS FIFO Client` destinations
 
 ## Installation
-The application can be deployed in an AWS account using the [Serverless Application Model (SAM)](https://github.com/awslabs/serverless-application-model). 
+The application can be deployed in an AWS account using either [Serverless Application Model (SAM)](https://github.com/awslabs/serverless-application-model) or [serverless fraamework](https://serverless.com/)
 
-To build and install the mark-api application you will need [AWS CLI](https://aws.amazon.com/cli/), [SAM](https://github.com/awslabs/serverless-application-model) and [Maven](https://maven.apache.org/) installed on your computer.
+Either approach requires [Maven](https://maven.apache.org/) installed on your computer. Once installed, from the shell, navigate to the root folder of the app and use maven to build a deployable jar. 
+ ```
+ $ mvn clean package
+ ```
+This command should generate a `mark-api.jar` in the `target` folder. Now that we have generated the jar file, we can use either serverless or SAM to package and the deploy to AWS. 
 
-Once they have been installed, from the shell, navigate to the root folder of the app and use maven to build a deployable jar. 
+### Serverless Framework
+If not already, install the serverless framework [installation guide](https://serverless.com/framework/docs/getting-started/). When complete, having first built the application with maven, from the root folder of the app type
+
+ ```
+ $ serverless deploy
+ ```
+
+Once the app is deployed, the following should appear
+
+    Serverless: Stack update finished...
+    Service Information
+    service: mark-api
+    stage: dev
+    region: eu-west-2
+    stack: mark-api-dev
+    resources: 20
+    api keys:
+      None
+    endpoints:
+      ANY - https://xxxxxxxx.execute-api.eu-west-2.amazonaws.com/dev/{proxy+}
+    functions:
+      MarkApiAppFunction: mark-api-dev-MarkApiAppFunction
+    layers:
+      None
+
+#### Run
+For an example of the REST operations supported by mark-api, please import the file `mark-api.postman_collection.json` into [Postman](https://www.getpostman.com/). But here are a couple of those GET operations to run in a browser
+
+List all marks:
+
 ```
-$ mvn clean package
+$ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1
+
+```
+Purchase a mark. This will only work once. To send another POST, change the value of "mark:"
+
+```
+$ curl -H "Content-Type: application/json" -X POST https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/dev/mark/v1/entitlement -d '
+  {
+    "mark": "AFCF0090",
+    "status": "MARK_ASSIGNED",
+    "eventTime": "2019-11-29T09:26:43.837Z",
+    "price": 299,
+    "entitlement": {
+      "certificateNo": "EV56RP259VQP8G423H65",
+      "nomineeName": "Mr John Jones",
+      "certificateTime": "2019-11-29T09:26:43.786Z",
+      "purchaserName": "Felicity Jones",
+      "address": {
+        "addLine1": "2 My Street",
+        "addLine2": "Redwood",
+        "postTown": "Swansea",
+        "postcode": "SW1 4RT"
+      }
+    }
+  }'
+
+```
+Get all events for a mark:
+
+```
+$ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/dev/mark/v1/event/registrationNumber/AFC0090
+
 ```
 
-This command should generate a `mark-api.jar` in the `target` folder. Now that we have generated the jar file, we can use SAM to package the sam for deployment. 
+Delete a mark. 
 
-You will need a deployment S3 bucket to store the artifacts for deployment. Once you have created the deployment S3 bucket, run the following command from the app root folder:
+```
+$ curl -X DELETE https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/dev/mark/v1/registrationNumber/AFC0090
+
+```
+Get mark/entitlement details:
+
+```
+$ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/dev/mark/v1/registrationNumber/AFC0090
+
+```
+
+List all marks mark:
+
+```
+$ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/dev/mark/v1
+
+```
+
+### SAM
+SAM requires an S3 bucket to store the artifacts for deployment. Once you have created the deployment S3 bucket, run the following command from the app root folder:
 
 ```
 $ sam package --output-template-file packaged.yml --s3-bucket <YOUR DEPLOYMENT S3 BUCKET NAME>
@@ -132,8 +215,8 @@ At any time, you may delete the stack
 $ aws cloudformation delete-stack --stack-name <YOUR STACK NAME>
 ```
 
-## Run
-For an example of the REST operations supported by mark-api, please import the file `mark-api.postman_collection.json` into [Postman](https://www.getpostman.com/). But here a a couple of those GET operations to run in a browser
+#### Run
+For an example of the REST operations supported by mark-api, please import the file `mark-api.postman_collection.json` into [Postman](https://www.getpostman.com/). But here are a couple of those GET operations to run in a browser
 
 List all marks:
 

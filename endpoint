@@ -11,7 +11,7 @@ aws cloudformation delete-stack --stack-name mark-api
 sam logs -n SomApiAppFunction --stack-name mark-api
 
 
-time curl -H "Content-Type: application/json" -X POST https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement -d '
+time curl -H "Content-Type: application/json" -X POST https://74jvhcyq6b..execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/entitlement -d '
 {
   "mark": "AFC0089",
   "status":"MARK_ASSIGNED",
@@ -31,6 +31,33 @@ time curl -H "Content-Type: application/json" -X POST https://npxwh3sztl.execute
   }
 }'
 
-curl https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/registrationNumber/AFC0089
+curl https://74jvhcyq6b..execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/registrationNumber/AFC0089
 
-curl https://npxwh3sztl.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/event/registrationNumber/AFC0089
+curl https://74jvhcyq6b..execute-api.eu-west-2.amazonaws.com/Prod/mark/v1/event/registrationNumber/AFC0089
+
+Serverless URLs
+================
+
+time curl -H "Content-Type: application/json" -X POST https://74jvhcyq6b.execute-api.eu-west-2.amazonaws.com/dev/mark/v1/entitlement -d '
+{
+  "mark": "AFC0089",
+  "status":"MARK_ASSIGNED",
+  "eventTime": "2019-11-29T09:26:43.837Z",
+  "price": 299,
+  "entitlement": {
+    "certificateNo": "EV56RP259VQP8G423H65",
+    "nomineeName": "Mr John Jones",
+    "certificateTime": "2019-11-29T09:26:43.786Z",
+    "purchaserName": "Felicity Jones",
+    "address": {
+      "addLine1": "2 My Street",
+      "addLine2": "Redwood",
+      "postTown": "Swansea",
+      "postcode": "SW1 4RT"
+    }
+  }
+}'
+
+curl https://74jvhcyq6b.execute-api.eu-west-2.amazonaws.com/dev/mark/v1/registrationNumber/AFC0089
+
+curl https://74jvhcyq6b.execute-api.eu-west-2.amazonaws.com/dev/mark/v1/event/registrationNumber/AFC0089
