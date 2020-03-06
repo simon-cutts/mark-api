@@ -4,7 +4,7 @@
 
 The applications depicted above, mark-api, mark-event-stream and mark-event-queue, are intended as a strawman to demonstrate the benefits of a light-weight, purely serverless event sourcing system. Event sourcing stores every state change to the application as an event object. These event objects are stored in the sequence they were applied for the lifetime of the application.
 
-This mark-api application has a 2 alternative companion applications (pick one), [mark-event-stream](https://github.com/simon-cutts/mark-event-stream) and [mark-event-queue](https://github.com/simon-cutts/mark-event-queue). The mark-api app is a microservice managing marks; mark-event-stream are mark-event-queue are different variant applications, consuming the events produced from mark-api.
+This mark-api application has a 2 alternative companion applications, [mark-event-stream](https://github.com/simon-cutts/mark-event-stream) and [mark-event-queue](https://github.com/simon-cutts/mark-event-queue) (pick one). The mark-api app is a microservice managing marks; mark-event-stream and mark-event-queue are different, variant applications, consuming the events produced from mark-api.
 
 Serverless was chosen to simplify the infrastructure with minimal dev ops; but, just as importantly, to use native cloud services rather than rely non-trivial specialist event sourced application frameworks. 
 
