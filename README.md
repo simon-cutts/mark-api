@@ -4,7 +4,7 @@
 
 The applications depicted above, mark-api, mark-event-stream and mark-event-queue, are intended as a strawman to demonstrate the benefits of a light-weight, purely serverless event sourcing system. Event sourcing stores every state change to the application as an event object. These event objects are stored in the sequence they were applied for the lifetime of the application.
 
-This mark-api application has a 2 alternative companion applications, [mark-event-stream](https://github.com/simon-cutts/mark-event-stream) and [mark-event-queue](https://github.com/simon-cutts/mark-event-queue). The mark-api app is a microservice managing marks; mark-event-stream are mark-event-queue are an applications consuming the events produced from mark-api.
+This mark-api application has a 2 alternative companion applications (pick one), [mark-event-stream](https://github.com/simon-cutts/mark-event-stream) and [mark-event-queue](https://github.com/simon-cutts/mark-event-queue). The mark-api app is a microservice managing marks; mark-event-stream are mark-event-queue are different variant applications, consuming the events produced from mark-api.
 
 Serverless was chosen to simplify the infrastructure with minimal dev ops; but, just as importantly, to use native cloud services rather than rely non-trivial specialist event sourced application frameworks. 
 
@@ -84,12 +84,6 @@ Once the app is deployed, the following should appear
 #### Run
 For an example of the REST operations supported by mark-api, please import the file `mark-api.postman_collection.json` into [Postman](https://www.getpostman.com/). But here are a couple of those GET operations to run in a browser
 
-List all marks:
-
-```
-$ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/Prod/mark/v1
-
-```
 Purchase a mark. This will only work once. To send another POST, change the value of "mark:"
 
 ```
@@ -120,6 +114,12 @@ Get all events for a mark:
 $ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/dev/mark/v1/event/registrationNumber/AFC0090
 
 ```
+List all marks:
+
+```
+$ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/dev/mark/v1
+
+```
 
 Delete a mark. 
 
@@ -131,13 +131,6 @@ Get mark/entitlement details:
 
 ```
 $ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/dev/mark/v1/registrationNumber/AFC0090
-
-```
-
-List all marks mark:
-
-```
-$ curl https://xxxxxxxxxx.execute-api.eu-west-2.amazonaws.com/dev/mark/v1
 
 ```
 
